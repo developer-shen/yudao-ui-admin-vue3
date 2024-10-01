@@ -113,8 +113,8 @@ export default {
     small: 'Small'
   },
   login: {
-    welcome: 'Welcome to the system',
-    message: 'Backstage management system',
+    welcome: 'Welcome!',
+    message: 'FashionView management system',
     tenantname: 'TenantName',
     username: 'Username',
     password: 'Password',
@@ -295,7 +295,7 @@ export default {
     edit: 'Edit',
     update: 'Update',
     preview: 'Preview',
-    more: 'More',
+    more: '',
     sync: 'Sync',
     save: 'Save',
     detail: 'Detail',
@@ -371,7 +371,7 @@ export default {
       signUpFormTitle: 'Sign up',
       forgetFormTitle: 'Reset password',
 
-      signInTitle: 'Backstage management system',
+      signInTitle: 'FashionView management system',
       signInDesc: 'Enter your personal details and get started!',
       policy: 'I agree to the xxx Privacy Policy',
       scanSign: `scanning the code to complete the login`,

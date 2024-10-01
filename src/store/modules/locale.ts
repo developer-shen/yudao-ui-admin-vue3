@@ -29,10 +29,10 @@ export const useLocaleStore = defineStore('locales', {
           lang: 'zh-CN',
           name: '简体中文'
         },
-        {
-          lang: 'en',
-          name: 'English'
-        }
+        // {
+        //   lang: 'en',
+        //   name: 'English'
+        // }
       ]
     }
   },

@@ -57,8 +57,8 @@
   </div>
 
   <el-row class="mt-8px" :gutter="8" justify="space-between">
-    <el-col :xl="16" :lg="16" :md="24" :sm="24" :xs="24" class="mb-8px">
-      <el-card shadow="never">
+    <el-col :xl="8" :lg="16" :md="24" :sm="24" :xs="24" class="mb-8px">
+      <!-- <el-card shadow="never">
         <template #header>
           <div class="h-3 flex justify-between">
             <span>{{ t('workplace.project') }}</span>
@@ -97,22 +97,22 @@
             </el-col>
           </el-row>
         </el-skeleton>
-      </el-card>
+      </el-card> -->
 
       <el-card shadow="never" class="mt-8px">
         <el-skeleton :loading="loading" animated>
           <el-row :gutter="20" justify="space-between">
-            <el-col :xl="10" :lg="10" :md="24" :sm="24" :xs="24">
+            <!-- <el-col :xl="10" :lg="10" :md="24" :sm="24" :xs="24">
               <el-card shadow="hover" class="mb-8px">
                 <el-skeleton :loading="loading" animated>
                   <Echart :options="pieOptionsData" :height="280" />
                 </el-skeleton>
               </el-card>
-            </el-col>
-            <el-col :xl="14" :lg="14" :md="24" :sm="24" :xs="24">
+            </el-col> -->
+            <el-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
               <el-card shadow="hover" class="mb-8px">
                 <el-skeleton :loading="loading" animated>
-                  <Echart :options="barOptionsData" :height="280" />
+                  <Echart :options="barOptionsData" :height="555" />
                 </el-skeleton>
               </el-card>
             </el-col>
@@ -121,7 +121,7 @@
       </el-card>
     </el-col>
     <el-col :xl="8" :lg="8" :md="24" :sm="24" :xs="24" class="mb-8px">
-      <el-card shadow="never">
+      <el-card shadow="never" class="mt-8px">
         <template #header>
           <div class="h-3 flex justify-between">
             <span>{{ t('workplace.shortcutOperation') }}</span>
@@ -129,7 +129,7 @@
         </template>
         <el-skeleton :loading="loading" animated>
           <el-row>
-            <el-col v-for="item in shortcut" :key="`team-${item.name}`" :span="8" class="mb-8px">
+            <el-col v-for="item in shortcut" :key="`team-${item.name}`" :span="12" class="mb-8px">
               <div class="flex items-center">
                 <Icon :icon="item.icon" class="mr-8px" />
                 <el-link type="default" :underline="false" @click="setWatermark(item.name)">
@@ -140,7 +140,7 @@
           </el-row>
         </el-skeleton>
       </el-card>
-      <el-card shadow="never" class="mt-8px">
+      <!-- <el-card shadow="never" class="mt-8px">
         <template #header>
           <div class="h-3 flex justify-between">
             <span>{{ t('workplace.notice') }}</span>
@@ -167,7 +167,7 @@
             <el-divider />
           </div>
         </el-skeleton>
-      </el-card>
+      </el-card> -->
     </el-col>
   </el-row>
 </template>

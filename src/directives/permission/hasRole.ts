@@ -9,7 +9,6 @@ export function hasRole(app: App<Element>) {
     const { value } = binding
     const super_admin = 'admin'
     const roles = wsCache.get(CACHE_KEY.USER).roles
-
     if (value && value instanceof Array && value.length > 0) {
       const roleFlag = value
 

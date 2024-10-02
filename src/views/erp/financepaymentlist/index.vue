@@ -137,7 +137,19 @@
       <el-table-column label="实付金额" align="center" prop="paymentPrice" />
       <el-table-column label="付款方式" align="center" prop="paymentWay" />
       <el-table-column label="付款用途" align="center" prop="paymentPurpose" />
-      <el-table-column label="附件" align="center" prop="fileUrl" />
+      <el-table-column label="附件" align="center" prop="fileUrl" width="110px">
+        <template #default="{ row }">
+          <el-image
+            v-if="row.fileUrl"
+            class="h-80px w-80px"
+            lazy
+            :src="row.fileUrl"
+            :preview-src-list="[row.fileUrl]"
+            preview-teleported
+            fit="cover"
+          />
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="创建者" align="center" prop="creatorName" />
       <el-table-column

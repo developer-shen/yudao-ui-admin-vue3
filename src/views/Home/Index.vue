@@ -353,13 +353,13 @@ const barOptionsData = reactive<EChartsOption>(barOptions) as EChartsOption
 // 周活跃量
 const getWeeklyUserActivity = async () => {
   const data = [
-    { value: 13253, name: 'analysis.monday' },
-    { value: 34235, name: 'analysis.tuesday' },
-    { value: 26321, name: 'analysis.wednesday' },
-    { value: 12340, name: 'analysis.thursday' },
-    { value: 24643, name: 'analysis.friday' },
-    { value: 1322, name: 'analysis.saturday' },
-    { value: 1324, name: 'analysis.sunday' }
+    { value: 3, name: 'analysis.monday' },
+    { value: 4, name: 'analysis.tuesday' },
+    { value: 6, name: 'analysis.wednesday' },
+    { value: 5, name: 'analysis.thursday' },
+    { value: 4, name: 'analysis.friday' },
+    { value: 7, name: 'analysis.saturday' },
+    { value: 2, name: 'analysis.sunday' }
   ]
   set(
     barOptionsData,

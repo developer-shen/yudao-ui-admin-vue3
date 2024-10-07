@@ -1,125 +1,143 @@
 <template>
   <ContentWrap>
-    <!-- 搜索工作栏 -->
-    <el-form
-      class="-mb-15px"
-      :model="queryParams"
-      ref="queryFormRef"
-      :inline="true"
-      label-width="68px"
-    >
-    <el-form-item label="财务人员" prop="financeUserId">
-        <el-select
-          v-model="queryParams.financeUserId"
-          clearable
-          filterable
-          placeholder="请选择财务人员"
-          class="!w-240px"
+    <el-row class="mt-8px" :gutter="8" justify="space-between">
+      <el-col :xl="4" :lg="12" :md="12" :sm="12" :xs="12" class="mb-8px">
+        <!-- 搜索工作栏 -->
+        <el-form
+          class="-mb-15px"
+          :model="queryParams"
+          ref="queryFormRef"
+          :inline="true"
+          label-width="68px"
         >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.nickname"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="付款时间" prop="paymentTime">
-        <el-date-picker
-          v-model="queryParams.paymentTime"
-          value-format="YYYY-MM-DD HH:mm:ss"
-          type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
-          class="!w-220px"
-        />
-      </el-form-item>
-      <el-form-item label="实付金额" prop="paymentPrice">
-        <el-input
-          v-model="queryParams.paymentPrice"
-          placeholder="请输入实付金额"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="付款方式" prop="paymentWay">
-        <el-input
-          v-model="queryParams.paymentWay"
-          placeholder="请输入付款方式"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="付款用途" prop="paymentPurpose">
-        <el-input
-          v-model="queryParams.paymentPurpose"
-          placeholder="请输入付款用途"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input
-          v-model="queryParams.remark"
-          placeholder="请输入备注"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="创建人" prop="creator">
-        <el-select
-          v-model="queryParams.creator"
-          clearable
-          filterable
-          placeholder="请选择创建人"
-          class="!w-240px"
-        >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.nickname"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
-        <el-date-picker
-          v-model="queryParams.createTime"
-          value-format="YYYY-MM-DD HH:mm:ss"
-          type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
-          class="!w-220px"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
-        <el-button
-          type="primary"
-          plain
-          @click="openForm('create')"
-          v-hasPermi="['erp:finance-payment-list:create']"
-        >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
-        </el-button>
-        <el-button
-          type="success"
-          plain
-          @click="handleExport"
-          :loading="exportLoading"
-          v-hasPermi="['erp:finance-payment-list:export']"
-        >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
-        </el-button>
-      </el-form-item>
-    </el-form>
+          <el-form-item label="财务人员" prop="financeUserId">
+            <el-select
+              v-model="queryParams.financeUserId"
+              clearable
+              filterable
+              placeholder="请选择财务人员"
+              class="!w-240px"
+            >
+              <el-option
+                v-for="item in userList"
+                :key="item.id"
+                :label="item.nickname"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="付款时间" prop="paymentTime">
+            <el-date-picker
+              v-model="queryParams.paymentTime"
+              value-format="YYYY-MM-DD HH:mm:ss"
+              type="daterange"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
+              class="!w-220px"
+            />
+          </el-form-item>
+          <el-form-item label="实付金额" prop="paymentPrice">
+            <el-input
+              v-model="queryParams.paymentPrice"
+              placeholder="请输入实付金额"
+              clearable
+              @keyup.enter="handleQuery"
+              class="!w-240px"
+            />
+          </el-form-item>
+          <el-form-item label="付款方式" prop="paymentWay">
+            <el-input
+              v-model="queryParams.paymentWay"
+              placeholder="请输入付款方式"
+              clearable
+              @keyup.enter="handleQuery"
+              class="!w-240px"
+            />
+          </el-form-item>
+          <el-form-item label="付款用途" prop="paymentPurpose">
+            <el-input
+              v-model="queryParams.paymentPurpose"
+              placeholder="请输入付款用途"
+              clearable
+              @keyup.enter="handleQuery"
+              class="!w-240px"
+            />
+          </el-form-item>
+          <el-form-item label="备注" prop="remark">
+            <el-input
+              v-model="queryParams.remark"
+              placeholder="请输入备注"
+              clearable
+              @keyup.enter="handleQuery"
+              class="!w-240px"
+            />
+          </el-form-item>
+          <el-form-item label="创建人" prop="creator">
+            <el-select
+              v-model="queryParams.creator"
+              clearable
+              filterable
+              placeholder="请选择创建人"
+              class="!w-240px"
+            >
+              <el-option
+                v-for="item in userList"
+                :key="item.id"
+                :label="item.nickname"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="创建时间" prop="createTime">
+            <el-date-picker
+              v-model="queryParams.createTime"
+              value-format="YYYY-MM-DD HH:mm:ss"
+              type="daterange"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
+              class="!w-220px"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button @click="handleQuery"
+              ><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button
+            >
+            <el-button @click="resetQuery"
+              ><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button
+            >
+            <el-button
+              type="primary"
+              plain
+              @click="openForm('create')"
+              v-hasPermi="['erp:finance-payment-list:create']"
+            >
+              <Icon icon="ep:plus" class="mr-5px" /> 新增
+            </el-button>
+            <el-button
+              type="success"
+              plain
+              @click="handleExport"
+              :loading="exportLoading"
+              v-hasPermi="['erp:finance-payment-list:export']"
+            >
+              <Icon icon="ep:download" class="mr-5px" /> 导出
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </el-col>
+
+      <el-col :xl="4" :lg="12" :md="12" :sm="12" :xs="12" class="mb-8px">
+        <el-skeleton :loading="loading" animated>
+          <el-card shadow="hover" class="mb-8px">
+            <el-skeleton :loading="loading" animated>
+              <Echart :options="pieOptionsData" :height="200" />
+            </el-skeleton>
+          </el-card>
+        </el-skeleton>
+      </el-col>
+    </el-row>
   </ContentWrap>
 
   <!-- 列表 -->
@@ -194,7 +212,9 @@
 </template>
 
 <script setup lang="ts">
+import { set } from 'lodash-es'
 import { dateFormatter } from '@/utils/formatTime'
+import { EChartsOption } from 'echarts'
 import download from '@/utils/download'
 import { FinancePaymentListApi, FinancePaymentListVO } from '@/api/erp/financepaymentlist'
 import FinancePaymentListForm from './FinancePaymentListForm.vue'
@@ -209,6 +229,8 @@ const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<FinancePaymentListVO[]>([]) // 列表的数据
+const statisticsList  = ref([]) // 饼状图的数据
+
 const total = ref(0) // 列表的总页数
 const queryParams = reactive({
   pageNo: 1,
@@ -227,6 +249,36 @@ const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出的加载中
 const userList = ref<UserVO[]>([]) // 用户列表
 
+
+// 饼状图的配置
+const pieOptions: EChartsOption = {
+  title: {
+    text: '支出统计',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b} : {c} ({d}%)'
+  },
+  legend: {
+    orient: 'vertical',
+    left: 'left',
+    data: []
+  },
+  series: [
+    {
+      name: '支出统计',
+      type: 'pie',
+      radius: '55%',
+      center: ['50%', '60%'],
+      data: []
+    }
+  ]
+}
+
+const pieOptionsData = reactive<EChartsOption>(pieOptions) as EChartsOption
+
+
 /** 查询列表 */
 const getList = async () => {
   loading.value = true
@@ -234,6 +286,9 @@ const getList = async () => {
     const data = await FinancePaymentListApi.getFinancePaymentListPage(queryParams)
     list.value = data.list
     total.value = data.total
+    statisticsList.value = data.side || []
+    // 获取支出统计数据
+    await getStatisticsData()
   } finally {
     loading.value = false
   }
@@ -283,6 +338,22 @@ const handleExport = async () => {
   } finally {
     exportLoading.value = false
   }
+}
+
+// 获取支出统计数据
+const getStatisticsData = async () => {
+  const data = statisticsList.value
+  set(
+    pieOptionsData,
+    'legend.data',
+    data.map((v) => t(v.name))
+  )
+  pieOptionsData!.series![0].data = data.map((v) => {
+    return {
+      name: t(v.name),
+      value: v.value
+    }
+  })
 }
 
 /** 初始化 **/

@@ -220,6 +220,7 @@ import { FinancePaymentListApi, FinancePaymentListVO } from '@/api/erp/financepa
 import FinancePaymentListForm from './FinancePaymentListForm.vue'
 import { UserVO } from '@/api/system/user'
 import * as UserApi from '@/api/system/user'
+import { log } from 'console'
 
 /** ERP 付款清单 列表 */
 defineOptions({ name: 'FinancePaymentList' })
@@ -229,7 +230,7 @@ const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<FinancePaymentListVO[]>([]) // 列表的数据
-const statisticsList  = ref([]) // 饼状图的数据
+const statisticsList = ref([]) // 饼状图的数据
 
 const total = ref(0) // 列表的总页数
 const queryParams = reactive({
@@ -249,35 +250,32 @@ const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出的加载中
 const userList = ref<UserVO[]>([]) // 用户列表
 
-
 // 饼状图的配置
 const pieOptions: EChartsOption = {
   title: {
-    text: '支出统计',
-    left: 'center'
+    text: '总支出',
+    subtext: '1000000',
+    left: 'left'
   },
   tooltip: {
-    trigger: 'item',
-    formatter: '{a} <br/>{b} : {c} ({d}%)'
+    trigger: 'item'
   },
   legend: {
     orient: 'vertical',
-    left: 'left',
-    data: []
+    left: 'right'
   },
   series: [
     {
-      name: '支出统计',
+      name: '付款金额',
       type: 'pie',
-      radius: '55%',
-      center: ['50%', '60%'],
+      radius: '80%',
+      center: ['60%', '50%'],
       data: []
     }
   ]
 }
 
 const pieOptionsData = reactive<EChartsOption>(pieOptions) as EChartsOption
-
 
 /** 查询列表 */
 const getList = async () => {
@@ -342,6 +340,7 @@ const handleExport = async () => {
 
 // 获取支出统计数据
 const getStatisticsData = async () => {
+  // 饼状图数据
   const data = statisticsList.value
   set(
     pieOptionsData,
@@ -354,6 +353,13 @@ const getStatisticsData = async () => {
       value: v.value
     }
   })
+
+  // 付款总数
+  let totalPrice = data.reduce((sum, item) => sum + item.value, 0)
+  pieOptionsData!.title = {
+    text: queryParams.paymentTime.length==2? queryParams.paymentTime[0].substring(0,10)+'至'+queryParams.paymentTime[1].substring(0,10)+'总支出': '总支出',
+    subtext: totalPrice+' 元',
+  }
 }
 
 /** 初始化 **/

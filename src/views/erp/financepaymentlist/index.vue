@@ -1,7 +1,7 @@
 <template>
   <ContentWrap>
     <el-row class="mt-8px" :gutter="8" justify="space-between">
-      <el-col :xl="4" :lg="12" :md="12" :sm="12" :xs="12" class="mb-8px">
+      <el-col :xl="12" :lg="12" :md="12" :sm="12" :xs="12" class="mb-8px">
         <!-- 搜索工作栏 -->
         <el-form
           class="-mb-15px"
@@ -128,7 +128,8 @@
         </el-form>
       </el-col>
 
-      <el-col :xl="4" :lg="12" :md="12" :sm="12" :xs="12" class="mb-8px">
+       <!-- 饼状图 -->
+      <el-col :xl="12" :lg="12" :md="12" :sm="12" :xs="12" class="mb-8px">
         <el-skeleton :loading="loading" animated>
           <el-card shadow="hover" class="mb-8px">
             <el-skeleton :loading="loading" animated>
@@ -254,7 +255,7 @@ const userList = ref<UserVO[]>([]) // 用户列表
 const pieOptions: EChartsOption = {
   title: {
     text: '总支出',
-    subtext: '1000000',
+    subtext: '0 元',
     left: 'left'
   },
   tooltip: {
@@ -268,7 +269,7 @@ const pieOptions: EChartsOption = {
     {
       name: '付款金额',
       type: 'pie',
-      radius: '80%',
+      radius: '70%',
       center: ['60%', '50%'],
       data: []
     }

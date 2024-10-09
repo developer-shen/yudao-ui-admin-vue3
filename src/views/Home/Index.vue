@@ -57,7 +57,7 @@
   </div>
 
   <el-row class="mt-8px" :gutter="8" justify="space-between">
-    <el-col :xl="8" :lg="16" :md="24" :sm="24" :xs="24" class="mb-8px">
+    <el-col :xl="16" :lg="16" :md="16" :sm="16" :xs="16" class="mb-8px">
       <!-- <el-card shadow="never">
         <template #header>
           <div class="h-3 flex justify-between">
@@ -120,7 +120,7 @@
         </el-skeleton>
       </el-card>
     </el-col>
-    <el-col :xl="8" :lg="8" :md="24" :sm="24" :xs="24" class="mb-8px">
+    <el-col :xl="8" :lg="8" :md="8" :sm="8" :xs="8" class="mb-8px">
       <el-card shadow="never" class="mt-8px">
         <template #header>
           <div class="h-3 flex justify-between">

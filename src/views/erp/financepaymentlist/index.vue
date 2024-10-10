@@ -1,15 +1,56 @@
 <template>
   <ContentWrap>
     <el-row class="mt-8px" :gutter="8" justify="space-between">
-      <el-col :xl="12" :lg="12" :md="12" :sm="12" :xs="12" class="mb-8px">
+      <el-form
+        class="-mb-15px"
+        :model="queryParams"
+        ref="queryFormRef"
+        :inline="true"
+        label-width="68px"
+        style="width: 100%"
+      >
+        <!-- 按钮工作栏 -->
+        <div style="display: flex; align-items: center">
+          <el-form-item>
+            <el-button @click="handleQuery" type="primary"
+              ><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button
+            >
+            <el-button @click="resetQuery" type="info" plain
+              ><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button
+            >
+
+            <el-button
+              type="primary"
+              plain
+              @click="openForm('create')"
+              v-hasPermi="['erp:finance-payment-list:create']"
+            >
+              <Icon icon="ep:plus" class="mr-5px" /> 新增
+            </el-button>
+            <el-button
+              type="success"
+              plain
+              @click="handleExport"
+              :loading="exportLoading"
+              v-hasPermi="['erp:finance-payment-list:export']"
+            >
+              <Icon icon="ep:download" class="mr-5px" /> 导出
+            </el-button>
+          </el-form-item>
+          <div style="position: absolute; right: 0; display: flex; align-items: center">
+            <span>总支出：</span>
+            <el-statistic :value="totalPriceLive" />
+            <span style="margin-left: 5px">元</span>
+          </div>
+        </div>
         <!-- 搜索工作栏 -->
-        <el-form
-          class="-mb-15px"
-          :model="queryParams"
-          ref="queryFormRef"
-          :inline="true"
-          label-width="68px"
-        >
+        <div>
+          <el-divider @click="showFilter()" style="margin-top: 0"
+            >{{ isShowFilter ? '收起筛选' : '展开筛选' }}<Icon icon="ep:filter"
+          /></el-divider>
+        </div>
+
+        <div v-show="isShowFilter">
           <el-form-item label="财务人员" prop="financeUserId">
             <el-select
               v-model="queryParams.financeUserId"
@@ -100,40 +141,31 @@
               class="!w-220px"
             />
           </el-form-item>
-          <el-form-item>
-            <el-button @click="handleQuery"
-              ><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button
-            >
-            <el-button @click="resetQuery"
-              ><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button
-            >
-            <el-button
-              type="primary"
-              plain
-              @click="openForm('create')"
-              v-hasPermi="['erp:finance-payment-list:create']"
-            >
-              <Icon icon="ep:plus" class="mr-5px" /> 新增
-            </el-button>
-            <el-button
-              type="success"
-              plain
-              @click="handleExport"
-              :loading="exportLoading"
-              v-hasPermi="['erp:finance-payment-list:export']"
-            >
-              <Icon icon="ep:download" class="mr-5px" /> 导出
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </el-col>
+        </div>
+      </el-form>
+    </el-row>
+  </ContentWrap>
 
-       <!-- 饼状图 -->
-      <el-col :xl="12" :lg="12" :md="12" :sm="12" :xs="12" class="mb-8px">
+  <!-- 统计图 -->
+  <ContentWrap>
+    <el-row class="mt-8px" :gutter="8" justify="space-between">
+      <!-- 饼状图 -->
+      <el-col :xl="8" :lg="8" :md="8" :sm="8" :xs="8" class="mb-8px">
         <el-skeleton :loading="loading" animated>
           <el-card shadow="hover" class="mb-8px">
             <el-skeleton :loading="loading" animated>
               <Echart :options="pieOptionsData" :height="200" />
+            </el-skeleton>
+          </el-card>
+        </el-skeleton>
+      </el-col>
+
+      <!-- 柱状图 -->
+      <el-col :xl="16" :lg="16" :md="16" :sm="16" :xs="16" class="mb-8px">
+        <el-skeleton :loading="loading" animated>
+          <el-card shadow="hover" class="mb-8px">
+            <el-skeleton :loading="loading" animated>
+              <Echart :options="barOptionsData" :height="200" />
             </el-skeleton>
           </el-card>
         </el-skeleton>
@@ -222,6 +254,7 @@ import FinancePaymentListForm from './FinancePaymentListForm.vue'
 import { UserVO } from '@/api/system/user'
 import * as UserApi from '@/api/system/user'
 import { log } from 'console'
+import { useTransition } from '@vueuse/core'
 
 /** ERP 付款清单 列表 */
 defineOptions({ name: 'FinancePaymentList' })
@@ -229,9 +262,18 @@ defineOptions({ name: 'FinancePaymentList' })
 const message = useMessage() // 消息弹窗
 const { t } = useI18n() // 国际化
 
+const isShowFilter = ref(false) // 是否显示筛选条件
 const loading = ref(true) // 列表的加载中
 const list = ref<FinancePaymentListVO[]>([]) // 列表的数据
-const statisticsList = ref([]) // 饼状图的数据
+const pieOptionsDataList = ref([]) // 饼状图的数据
+const barOptionsDataList = ref([]) // 柱状图的数据
+const totalPrice = ref(0) // 付款总数
+const totalPriceLive = useTransition(totalPrice, { duration: 1500 }) // 付款总数(动画)
+
+//收起展开搜索条件
+const showFilter = () => {
+  isShowFilter.value = !isShowFilter.value
+}
 
 const total = ref(0) // 列表的总页数
 const queryParams = reactive({
@@ -253,30 +295,64 @@ const userList = ref<UserVO[]>([]) // 用户列表
 
 // 饼状图的配置
 const pieOptions: EChartsOption = {
-  title: {
-    text: '总支出',
-    subtext: '0 元',
-    left: 'left'
-  },
+  // title: {
+  //   text: '总支出',
+  //   subtext: '0 元',
+  //   left: 'left'
+  // },
   tooltip: {
     trigger: 'item'
   },
   legend: {
     orient: 'vertical',
-    left: 'right'
+    left: 'left'
   },
   series: [
     {
       name: '付款金额',
       type: 'pie',
       radius: '70%',
-      center: ['60%', '50%'],
+      center: ['50%', '50%'],
       data: []
     }
   ]
 }
+// 柱状图的配置
+const barOptions: EChartsOption = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  grid: {
+    left: 100,
+    right: 20,
+    bottom: 20,
+    top: 5
+  },
+  xAxis: {
+    type: 'value' // 将 x 轴设置为 value 类型
+  },
+  yAxis: {
+    type: 'category', // 将 y 轴设置为 category 类型
+    data: [], // 类别数据
+    axisTick: {
+      alignWithLabel: true
+    }
+  },
+  series: [
+    {
+      data: [],
+      type: 'bar'
+    }
+  ]
+}
 
+// 饼状图数据
 const pieOptionsData = reactive<EChartsOption>(pieOptions) as EChartsOption
+// 柱状图数据
+const barOptionsData = reactive<EChartsOption>(barOptions) as EChartsOption
 
 /** 查询列表 */
 const getList = async () => {
@@ -285,7 +361,9 @@ const getList = async () => {
     const data = await FinancePaymentListApi.getFinancePaymentListPage(queryParams)
     list.value = data.list
     total.value = data.total
-    statisticsList.value = data.side || []
+    pieOptionsDataList.value = data.side.pieOptionsDataList || []
+    barOptionsDataList.value = data.side.barOptionsDataList || []
+
     // 获取支出统计数据
     await getStatisticsData()
   } finally {
@@ -342,13 +420,12 @@ const handleExport = async () => {
 // 获取支出统计数据
 const getStatisticsData = async () => {
   // 饼状图数据
-  const data = statisticsList.value
   set(
     pieOptionsData,
     'legend.data',
-    data.map((v) => t(v.name))
+    pieOptionsDataList.value.map((v) => t(v.name))
   )
-  pieOptionsData!.series![0].data = data.map((v) => {
+  pieOptionsData!.series![0].data = pieOptionsDataList.value.map((v) => {
     return {
       name: t(v.name),
       value: v.value
@@ -356,11 +433,30 @@ const getStatisticsData = async () => {
   })
 
   // 付款总数
-  let totalPrice = data.reduce((sum, item) => sum + item.value, 0)
-  pieOptionsData!.title = {
-    text: queryParams.paymentTime.length==2? queryParams.paymentTime[0].substring(0,10)+'至'+queryParams.paymentTime[1].substring(0,10)+'总支出': '总支出',
-    subtext: totalPrice+' 元',
-  }
+  totalPrice.value = pieOptionsDataList.value.reduce((sum, item) => sum + item.value, 0)
+  // pieOptionsData!.title = {
+  //   text:
+  //     queryParams.paymentTime.length == 2
+  //       ? queryParams.paymentTime[0].substring(0, 10) +
+  //         '至' +
+  //         queryParams.paymentTime[1].substring(0, 10) +
+  //         '总支出'
+  //       : '总支出',
+  //   subtext: totalPrice + ' 元'
+  // }
+
+  // 柱状图数据
+  set(
+    barOptionsData,
+    'yAxis.data',
+    barOptionsDataList.value.map((v) => t(v.name))
+  )
+  set(barOptionsData, 'series', [
+    {
+      data: barOptionsDataList.value.map((v) => v.value),
+      type: 'bar'
+    }
+  ])
 }
 
 /** 初始化 **/

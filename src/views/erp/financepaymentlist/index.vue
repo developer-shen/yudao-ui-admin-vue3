@@ -45,7 +45,7 @@
         </div>
         <!-- 搜索工作栏 -->
         <div>
-          <el-divider @click="showFilter()" style="margin-top: 0"
+          <el-divider @click="showFilter()" style="margin-top: 0; cursor: pointer;"
             >{{ isShowFilter ? '收起筛选' : '展开筛选' }}<Icon icon="ep:filter"
           /></el-divider>
         </div>
@@ -312,7 +312,7 @@ const pieOptions: EChartsOption = {
       name: '付款金额',
       type: 'pie',
       radius: '70%',
-      center: ['50%', '50%'],
+      center: ['60%', '50%'],
       data: []
     }
   ]
@@ -329,7 +329,7 @@ const barOptions: EChartsOption = {
     left: 100,
     right: 20,
     bottom: 20,
-    top: 5
+    top: 0
   },
   xAxis: {
     type: 'value' // 将 x 轴设置为 value 类型
@@ -361,8 +361,10 @@ const getList = async () => {
     const data = await FinancePaymentListApi.getFinancePaymentListPage(queryParams)
     list.value = data.list
     total.value = data.total
-    pieOptionsDataList.value = data.side.pieOptionsDataList || []
-    barOptionsDataList.value = data.side.barOptionsDataList || []
+    if (data.side) {
+      pieOptionsDataList.value = data.side.pieOptionsDataList || []
+      barOptionsDataList.value = data.side.barOptionsDataList || []
+    }
 
     // 获取支出统计数据
     await getStatisticsData()

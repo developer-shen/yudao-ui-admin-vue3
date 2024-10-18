@@ -3,7 +3,7 @@
 
   <div class="flex flex-col">
     <!-- 销售/采购的全局统计 -->
-    <el-row :gutter="16" class="row">
+    <!-- <el-row :gutter="16" class="row">
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
         <SummaryCard title="今日销售" :value="saleSummary?.todayPrice" />
       </el-col>
@@ -28,20 +28,28 @@
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
         <SummaryCard title="今年采购" :value="purchaseSummary?.yearPrice" />
       </el-col>
-    </el-row>
-    <!-- 销售/采购的时段统计 -->
+    </el-row> -->
+
+    <!-- 销售订单统计 -->
     <el-row :gutter="16" class="row">
-      <!-- 销售统计 -->
       <el-col :md="24" :sm="24" :xs="24" :loading="loading">
-        <TimeSummaryChart title="销售订单统计" :value="saleTimeSummaryList" />
+        <TimeSummaryChart title="销售订单统计" :value="saleNumTimeSummaryList" />
       </el-col>
     </el-row>
-    <!-- 采购统计 -->
+    
+     <!-- 销售金额统计 -->
     <el-row :gutter="16" class="row">
+      <el-col :md="24" :sm="24" :xs="24" :loading="loading">
+        <TimeSummaryChart title="销售金额统计" :value="saleMoneyTimeSummaryList" />
+      </el-col>
+    </el-row>
+
+    <!-- 采购统计 -->
+    <!-- <el-row :gutter="16" class="row">
       <el-col :md="24" :sm="24" :xs="24" :loading="loading">
         <TimeSummaryChart title="采购统计" :value="purchaseTimeSummaryList" />
       </el-col>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 <script lang="ts" setup>
@@ -63,26 +71,30 @@ defineOptions({ name: 'ErpHome' })
 
 const loading = ref(true) // 加载中
 
-/** 获得销售统计 */
-const saleSummary = ref<ErpSaleSummaryRespVO>() // 销售概况统计
-const saleTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // 销售时段统计
-const getSaleSummary = async () => {
-  saleSummary.value = await SaleStatisticsApi.getSaleSummary()
-  saleTimeSummaryList.value = await SaleStatisticsApi.getSaleTimeSummary()
+/** 获得销售订单统计 */
+const saleNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // 销售时段统计
+const getSaleNumSummary = async () => {
+  saleNumTimeSummaryList.value = await SaleStatisticsApi.getSaleNumTimeSummary()
+}
+
+/** 获得销售金额统计 */
+  const saleMoneyTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // 销售时段统计
+const getSaleMoneySummary = async () => {
+  saleMoneyTimeSummaryList.value = await SaleStatisticsApi.getSaleMoneyTimeSummary()
 }
 
 /** 获得采购统计 */
-const purchaseSummary = ref<ErpPurchaseSummaryRespVO>() // 采购概况统计
-const purchaseTimeSummaryList = ref<ErpPurchaseTimeSummaryRespVO[]>() // 采购时段统计
-const getPurchaseSummary = async () => {
-  purchaseSummary.value = await PurchaseStatisticsApi.getPurchaseSummary()
-  purchaseTimeSummaryList.value = await PurchaseStatisticsApi.getPurchaseTimeSummary()
-}
+// const purchaseSummary = ref<ErpPurchaseSummaryRespVO>() // 采购概况统计
+// const purchaseTimeSummaryList = ref<ErpPurchaseTimeSummaryRespVO[]>() // 采购时段统计
+// const getPurchaseSummary = async () => {
+//   purchaseSummary.value = await PurchaseStatisticsApi.getPurchaseSummary()
+//   purchaseTimeSummaryList.value = await PurchaseStatisticsApi.getPurchaseTimeSummary()
+// }
 
 /** 初始化 **/
 onMounted(async () => {
   loading.value = true
-  await Promise.all([getSaleSummary(), getPurchaseSummary()])
+  await Promise.all([getSaleNumSummary(),getSaleMoneySummary()])
   loading.value = false
 })
 </script>

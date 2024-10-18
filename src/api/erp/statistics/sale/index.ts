@@ -21,8 +21,13 @@ export const SaleStatisticsApi = {
     return await request.get({ url: `/erp/sale-statistics/summary` })
   },
 
-  // 获得销售时间段统计
-  getSaleTimeSummary: async (): Promise<ErpSaleTimeSummaryRespVO[]> => {
-    return await request.get({ url: `/erp/sale-statistics/time-summary` })
+  // 获得销售订单时间段统计
+  getSaleNumTimeSummary: async (): Promise<ErpSaleTimeSummaryRespVO[]> => {
+    return await request.get({ url: `/erp/sale-statistics/num-time-summary` })
+  },
+
+  // 获得销售金额时间段统计
+  getSaleMoneyTimeSummary: async (): Promise<ErpSaleTimeSummaryRespVO[]> => {
+    return await request.get({ url: `/erp/sale-statistics/money-time-summary` })
   }
 }

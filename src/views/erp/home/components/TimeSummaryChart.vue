@@ -13,7 +13,7 @@ import { EChartsOption } from 'echarts'
 import { CardTitle } from '@/components/Card'
 import { propTypes } from '@/utils/propTypes'
 
-/** 会员用户统计卡片 */
+/** 统计卡片 */
 defineOptions({ name: 'MemberStatisticsCard' })
 
 const props = defineProps({
@@ -27,11 +27,17 @@ const lineChartOptions = reactive<EChartsOption>({
     left: 20,
     right: 20,
     bottom: 20,
-    top: 80,
+    top: 50,
     containLabel: true
   },
   legend: {
-    top: 50
+    top: 0, // 设置 legend 距离顶部的距离
+    left: 'center', // 将 legend 放置在图表上方居中
+    textStyle: {
+      color: '#ffffff',  // 文字颜色
+      fontSize: 15,   // 文字大小
+    },
+    icon: 'roundRect',  // 使用圆角矩形作为图例图标
   },
   toolbox: {
     feature: {
@@ -92,6 +98,10 @@ watch(
       name: key,
       type: 'line',
       smooth: true,
+      label: {
+        show: true,
+        position: 'top'
+      },
       data: seriesData[key] // 使用对应字段的数据
     }))
 

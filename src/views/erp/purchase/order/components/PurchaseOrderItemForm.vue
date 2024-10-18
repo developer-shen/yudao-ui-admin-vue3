@@ -10,7 +10,7 @@
   >
     <el-table :data="formData" show-summary :summary-method="getSummaries" class="-mt-10px">
       <el-table-column label="序号" type="index" align="center" width="60" />
-      <el-table-column label="产品名称" min-width="180">
+      <el-table-column label="skc货号" min-width="180">
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.productId`" :rules="formRules.productId" class="mb-0px!">
             <el-select
@@ -30,41 +30,20 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="库存" min-width="100">
-        <template #default="{ row }">
-          <el-form-item class="mb-0px!">
-            <el-input disabled v-model="row.stockCount" :formatter="erpCountInputFormatter" />
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="条码" min-width="150">
-        <template #default="{ row }">
-          <el-form-item class="mb-0px!">
-            <el-input disabled v-model="row.productBarCode" />
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="单位" min-width="80">
-        <template #default="{ row }">
-          <el-form-item class="mb-0px!">
-            <el-input disabled v-model="row.productUnitName" />
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="数量" prop="count" fixed="right" min-width="140">
+      <el-table-column label="数量" prop="count" min-width="140">
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.count`" :rules="formRules.count" class="mb-0px!">
             <el-input-number
               v-model="row.count"
               controls-position="right"
               :min="0.001"
-              :precision="3"
+              :precision="0"
               class="!w-100%"
             />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="产品单价" fixed="right" min-width="120">
+      <el-table-column label="产品单价" min-width="120">
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.productPrice`" class="mb-0px!">
             <el-input-number
@@ -77,7 +56,7 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="金额" prop="totalProductPrice" fixed="right" min-width="100">
+      <el-table-column label="金额" prop="totalProductPrice" min-width="100">
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.totalProductPrice`" class="mb-0px!">
             <el-input
@@ -85,35 +64,6 @@
               v-model="row.totalProductPrice"
               :formatter="erpPriceInputFormatter"
             />
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="税率（%）" fixed="right" min-width="115">
-        <template #default="{ row, $index }">
-          <el-form-item :prop="`${$index}.taxPercent`" class="mb-0px!">
-            <el-input-number
-              v-model="row.taxPercent"
-              controls-position="right"
-              :min="0"
-              :precision="2"
-              class="!w-100%"
-            />
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="税额" prop="taxPrice" fixed="right" min-width="120">
-        <template #default="{ row, $index }">
-          <el-form-item :prop="`${$index}.taxPrice`" class="mb-0px!">
-            <el-form-item :prop="`${$index}.taxPrice`" class="mb-0px!">
-              <el-input disabled v-model="row.taxPrice" :formatter="erpPriceInputFormatter" />
-            </el-form-item>
-          </el-form-item>
-        </template>
-      </el-table-column>
-      <el-table-column label="税额合计" prop="totalPrice" fixed="right" min-width="100">
-        <template #default="{ row, $index }">
-          <el-form-item :prop="`${$index}.totalPrice`" class="mb-0px!">
-            <el-input disabled v-model="row.totalPrice" :formatter="erpPriceInputFormatter" />
           </el-form-item>
         </template>
       </el-table-column>

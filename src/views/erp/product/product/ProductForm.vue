@@ -10,40 +10,11 @@
     >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="名称" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入名称" />
+          <el-form-item label="skc货号" prop="name">
+            <el-input v-model="formData.name" placeholder="请输入skc货号" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="条码" prop="barCode">
-            <el-input v-model="formData.barCode" placeholder="请输入条码" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="分类" prop="categoryId">
-            <el-tree-select
-              v-model="formData.categoryId"
-              :data="categoryList"
-              :props="defaultProps"
-              check-strictly
-              default-expand-all
-              placeholder="请选择分类"
-              class="w-1/1"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="单位" prop="unitId">
-            <el-select v-model="formData.unitId" clearable placeholder="请选择单位" class="w-1/1">
-              <el-option
-                v-for="unit in unitList"
-                :key="unit.id"
-                :label="unit.name"
-                :value="unit.id"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
+       
         <el-col :span="12">
           <el-form-item label="状态" prop="status">
             <el-radio-group v-model="formData.status">
@@ -57,32 +28,7 @@
             </el-radio-group>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="规格" prop="standard">
-            <el-input v-model="formData.standard" placeholder="请输入规格" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="保质期天数" prop="expiryDay">
-            <el-input-number
-              v-model="formData.expiryDay"
-              placeholder="请输入保质期天数"
-              :min="0"
-              :precision="0"
-              class="!w-1/1"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="重量（kg）" prop="weight">
-            <el-input-number
-              v-model="formData.weight"
-              placeholder="请输入重量（kg）"
-              :min="0"
-              class="!w-1/1"
-            />
-          </el-form-item>
-        </el-col>
+       
         <el-col :span="12">
           <el-form-item label="采购价格" prop="purchasePrice">
             <el-input-number
@@ -99,17 +45,6 @@
             <el-input-number
               v-model="formData.salePrice"
               placeholder="请输入销售价格，单位：元"
-              :min="0"
-              :precision="2"
-              class="!w-1/1"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="最低价格" prop="minPrice">
-            <el-input-number
-              v-model="formData.minPrice"
-              placeholder="请输入最低价格，单位：元"
               :min="0"
               :precision="2"
               class="!w-1/1"
@@ -163,10 +98,7 @@ const formData = ref({
   minPrice: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }],
-  barCode: [{ required: true, message: '产品条码不能为空', trigger: 'blur' }],
-  categoryId: [{ required: true, message: '产品分类编号不能为空', trigger: 'blur' }],
-  unitId: [{ required: true, message: '单位编号不能为空', trigger: 'blur' }],
+  name: [{ required: true, message: 'skc货号不能为空', trigger: 'blur' }],
   status: [{ required: true, message: '产品状态不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref

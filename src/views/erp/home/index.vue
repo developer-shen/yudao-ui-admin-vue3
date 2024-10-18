@@ -32,11 +32,13 @@
     <!-- 销售/采购的时段统计 -->
     <el-row :gutter="16" class="row">
       <!-- 销售统计 -->
-      <el-col :md="12" :sm="12" :xs="24" :loading="loading">
-        <TimeSummaryChart title="销售统计" :value="saleTimeSummaryList" />
+      <el-col :md="24" :sm="24" :xs="24" :loading="loading">
+        <TimeSummaryChart title="销售订单统计" :value="saleTimeSummaryList" />
       </el-col>
-      <!-- 采购统计 -->
-      <el-col :md="12" :sm="12" :xs="24" :loading="loading">
+    </el-row>
+    <!-- 采购统计 -->
+    <el-row :gutter="16" class="row">
+      <el-col :md="24" :sm="24" :xs="24" :loading="loading">
         <TimeSummaryChart title="采购统计" :value="purchaseTimeSummaryList" />
       </el-col>
     </el-row>

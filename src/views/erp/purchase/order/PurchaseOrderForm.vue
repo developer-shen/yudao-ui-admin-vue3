@@ -10,11 +10,6 @@
     >
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="订单单号" prop="no">
-            <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
           <el-form-item label="订单时间" prop="orderTime">
             <el-date-picker
               v-model="formData.orderTime"
@@ -69,59 +64,8 @@
       </ContentWrap>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="优惠率（%）" prop="discountPercent">
-            <el-input-number
-              v-model="formData.discountPercent"
-              controls-position="right"
-              :min="0"
-              :precision="2"
-              placeholder="请输入优惠率"
-              class="!w-1/1"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="付款优惠" prop="discountPrice">
-            <el-input
-              disabled
-              v-model="formData.discountPrice"
-              :formatter="erpPriceInputFormatter"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="优惠后金额">
+          <el-form-item label="总采购金额">
             <el-input disabled v-model="formData.totalPrice" :formatter="erpPriceInputFormatter" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="结算账户" prop="accountId">
-            <el-select
-              v-model="formData.accountId"
-              clearable
-              filterable
-              placeholder="请选择结算账户"
-              class="!w-1/1"
-            >
-              <el-option
-                v-for="item in accountList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="支付订金" prop="depositPrice">
-            <el-input-number
-              v-model="formData.depositPrice"
-              controls-position="right"
-              :min="0"
-              :precision="2"
-              placeholder="请输入支付订金"
-              class="!w-1/1"
-            />
           </el-form-item>
         </el-col>
       </el-row>

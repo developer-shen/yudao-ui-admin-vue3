@@ -10,15 +10,6 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="订单单号" prop="no">
-        <el-input
-          v-model="queryParams.no"
-          placeholder="请输入订单单号"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
       <el-form-item label="产品" prop="productId">
         <el-select
           v-model="queryParams.productId"
@@ -62,22 +53,6 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建人" prop="creator">
-        <el-select
-          v-model="queryParams.creator"
-          clearable
-          filterable
-          placeholder="请选择创建人"
-          class="!w-240px"
-        >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.nickname"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
           <el-option
@@ -86,39 +61,6 @@
             :label="dict.label"
             :value="dict.value"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input
-          v-model="queryParams.remark"
-          placeholder="请输入备注"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="入库数量" prop="inStatus">
-        <el-select
-          v-model="queryParams.inStatus"
-          placeholder="请选择入库数量"
-          clearable
-          class="!w-240px"
-        >
-          <el-option label="未入库" value="0" />
-          <el-option label="部分入库" value="1" />
-          <el-option label="全部入库" value="2" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="退货数量" prop="returnStatus">
-        <el-select
-          v-model="queryParams.returnStatus"
-          placeholder="请选择退货数量"
-          clearable
-          class="!w-240px"
-        >
-          <el-option label="未退货" value="0" />
-          <el-option label="部分退货" value="1" />
-          <el-option label="全部退货" value="2" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -164,33 +106,13 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column width="30" label="选择" type="selection" />
-      <el-table-column min-width="180" label="订单单号" align="center" prop="no" />
-      <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
+      <el-table-column label="编号" align="center" prop="id" />
+      <el-table-column label="skc货号" align="center" prop="productNames" min-width="200" />
       <el-table-column label="供应商" align="center" prop="supplierName" />
-      <el-table-column
-        label="订单时间"
-        align="center"
-        prop="orderTime"
-        :formatter="dateFormatter2"
-        width="120px"
-      />
-      <el-table-column label="创建人" align="center" prop="creatorName" />
       <el-table-column
         label="总数量"
         align="center"
         prop="totalCount"
-        :formatter="erpCountTableColumnFormatter"
-      />
-      <el-table-column
-        label="入库数量"
-        align="center"
-        prop="inCount"
-        :formatter="erpCountTableColumnFormatter"
-      />
-      <el-table-column
-        label="退货数量"
-        align="center"
-        prop="returnCount"
         :formatter="erpCountTableColumnFormatter"
       />
       <el-table-column
@@ -199,17 +121,18 @@
         prop="totalProductPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column
+      <!-- <el-table-column
         label="含税金额"
         align="center"
         prop="totalPrice"
         :formatter="erpPriceTableColumnFormatter"
-      />
+      /> -->
       <el-table-column
-        label="支付订金"
+        label="订单时间"
         align="center"
-        prop="depositPrice"
-        :formatter="erpPriceTableColumnFormatter"
+        prop="orderTime"
+        :formatter="dateFormatter2"
+        width="120px"
       />
       <el-table-column label="状态" align="center" fixed="right" width="90" prop="status">
         <template #default="scope">

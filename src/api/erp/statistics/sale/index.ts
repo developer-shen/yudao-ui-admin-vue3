@@ -11,7 +11,7 @@ export interface ErpSaleSummaryRespVO {
 // ERP 销售时间段统计 VO
 export interface ErpSaleTimeSummaryRespVO {
   time: string // 时间
-  price: number // 销售金额
+  data: Object //数据
 }
 
 // ERP 销售统计 API

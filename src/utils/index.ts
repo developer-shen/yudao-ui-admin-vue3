@@ -320,7 +320,7 @@ export const calculateRelativeRate = (value?: number, reference?: number) => {
 
 // ========== ERP 专属方法 ==========
 
-const ERP_COUNT_DIGIT = 3
+const ERP_COUNT_DIGIT = 0
 const ERP_PRICE_DIGIT = 2
 
 /**

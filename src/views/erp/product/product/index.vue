@@ -11,23 +11,12 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="名称" prop="name">
+      <el-form-item label="skc货号" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入名称"
+          placeholder="请输入skc货号"
           clearable
           @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="分类" prop="categoryId">
-        <el-tree-select
-          v-model="queryParams.categoryId"
-          :data="categoryList"
-          :props="defaultProps"
-          check-strictly
-          default-expand-all
-          placeholder="请输入分类"
           class="!w-240px"
         />
       </el-form-item>
@@ -58,11 +47,8 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="条码" align="center" prop="barCode" />
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="规格" align="center" prop="standard" />
-      <el-table-column label="分类" align="center" prop="categoryName" />
-      <el-table-column label="单位" align="center" prop="unitName" />
+      <el-table-column label="编号" align="center" prop="id" />
+      <el-table-column label="skc货号" align="center" prop="name" />
       <el-table-column
         label="采购价格"
         align="center"
@@ -73,12 +59,6 @@
         label="销售价格"
         align="center"
         prop="salePrice"
-        :formatter="erpPriceTableColumnFormatter"
-      />
-      <el-table-column
-        label="最低价格"
-        align="center"
-        prop="minPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column label="状态" align="center" prop="status">

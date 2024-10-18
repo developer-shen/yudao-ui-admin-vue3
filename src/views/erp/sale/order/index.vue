@@ -10,7 +10,7 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="订单单号" prop="no">
+      <!-- <el-form-item label="订单单号" prop="no">
         <el-input
           v-model="queryParams.no"
           placeholder="请输入订单单号"
@@ -18,7 +18,7 @@
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="产品" prop="productId">
         <el-select
           v-model="queryParams.productId"
@@ -46,34 +46,18 @@
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="客户" prop="customerId">
+      <el-form-item label="订单平台" prop="customerId">
         <el-select
           v-model="queryParams.customerId"
           clearable
           filterable
-          placeholder="请选择供客户"
+          placeholder="请选择供订单平台"
           class="!w-240px"
         >
           <el-option
             v-for="item in customerList"
             :key="item.id"
             :label="item.name"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="创建人" prop="creator">
-        <el-select
-          v-model="queryParams.creator"
-          clearable
-          filterable
-          placeholder="请选择创建人"
-          class="!w-240px"
-        >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.nickname"
             :value="item.id"
           />
         </el-select>
@@ -86,39 +70,6 @@
             :label="dict.label"
             :value="dict.value"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input
-          v-model="queryParams.remark"
-          placeholder="请输入备注"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="出库数量" prop="outStatus">
-        <el-select
-          v-model="queryParams.outStatus"
-          placeholder="请选择出库数量"
-          clearable
-          class="!w-240px"
-        >
-          <el-option label="未出库" value="0" />
-          <el-option label="部分出库" value="1" />
-          <el-option label="全部出库" value="2" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="退货数量" prop="returnStatus">
-        <el-select
-          v-model="queryParams.returnStatus"
-          placeholder="请选择退货数量"
-          clearable
-          class="!w-240px"
-        >
-          <el-option label="未退货" value="0" />
-          <el-option label="部分退货" value="1" />
-          <el-option label="全部退货" value="2" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -164,9 +115,9 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column width="30" label="选择" type="selection" />
-      <el-table-column min-width="180" label="订单单号" align="center" prop="no" />
+      <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
-      <el-table-column label="客户" align="center" prop="customerName" />
+      <el-table-column label="订单平台" align="center" prop="customerName" />
       <el-table-column
         label="订单时间"
         align="center"
@@ -174,7 +125,6 @@
         :formatter="dateFormatter2"
         width="120px"
       />
-      <el-table-column label="创建人" align="center" prop="creatorName" />
       <el-table-column
         label="总数量"
         align="center"
@@ -182,33 +132,9 @@
         :formatter="erpCountTableColumnFormatter"
       />
       <el-table-column
-        label="出库数量"
-        align="center"
-        prop="outCount"
-        :formatter="erpCountTableColumnFormatter"
-      />
-      <el-table-column
-        label="退货数量"
-        align="center"
-        prop="returnCount"
-        :formatter="erpCountTableColumnFormatter"
-      />
-      <el-table-column
         label="金额合计"
         align="center"
         prop="totalProductPrice"
-        :formatter="erpPriceTableColumnFormatter"
-      />
-      <el-table-column
-        label="含税金额"
-        align="center"
-        prop="totalPrice"
-        :formatter="erpPriceTableColumnFormatter"
-      />
-      <el-table-column
-        label="收取订金"
-        align="center"
-        prop="depositPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column label="状态" align="center" fixed="right" width="90" prop="status">

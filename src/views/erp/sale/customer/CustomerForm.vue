@@ -8,34 +8,9 @@
       v-loading="formLoading"
     >
       <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item label="名称" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入名称" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="联系人" prop="contact">
-            <el-input v-model="formData.contact" placeholder="请输入联系人" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="手机号码" prop="mobile">
-            <el-input v-model="formData.mobile" placeholder="请输入手机号码" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="联系电话" prop="telephone">
-            <el-input v-model="formData.telephone" placeholder="请输入联系电话" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="电子邮箱" prop="email">
-            <el-input v-model="formData.email" placeholder="请输入电子邮箱" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="传真" prop="fax">
-            <el-input v-model="formData.fax" placeholder="请输入传真" />
+        <el-col :span="24">
+          <el-form-item label="平台名称" prop="name">
+            <el-input v-model="formData.name" placeholder="请输入平台名称" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -59,37 +34,6 @@
               class="!w-1/1"
               :precision="0"
             />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="纳税人识别号" prop="taxNo">
-            <el-input v-model="formData.taxNo" placeholder="请输入纳税人识别号" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="税率(%)" prop="taxPercent">
-            <el-input-number
-              v-model="formData.taxPercent"
-              :min="0"
-              :precision="2"
-              placeholder="请输入税率"
-              class="!w-1/1"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="开户行" prop="bankName">
-            <el-input v-model="formData.bankName" placeholder="请输入开户行" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="开户账号" prop="bankAccount">
-            <el-input v-model="formData.bankAccount" placeholder="请输入开户账号" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="开户地址" prop="bankAddress">
-            <el-input v-model="formData.bankAddress" placeholder="请输入开户地址" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -138,7 +82,7 @@ const formData = ref({
   bankAddress: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '客户名称不能为空', trigger: 'blur' }],
+  name: [{ required: true, message: '平台名称不能为空', trigger: 'blur' }],
   status: [{ required: true, message: '开启状态不能为空', trigger: 'blur' }],
   sort: [{ required: true, message: '排序不能为空', trigger: 'blur' }]
 })

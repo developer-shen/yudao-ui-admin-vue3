@@ -9,11 +9,11 @@
       :disabled="disabled"
     >
       <el-row :gutter="20">
-        <el-col :span="8">
+        <!-- <el-col :span="8">
           <el-form-item label="订单单号" prop="no">
             <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :span="8">
           <el-form-item label="订单时间" prop="orderTime">
             <el-date-picker
@@ -26,36 +26,18 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="客户" prop="customerId">
+          <el-form-item label="销售平台" prop="customerId">
             <el-select
               v-model="formData.customerId"
               clearable
               filterable
-              placeholder="请选择客户"
+              placeholder="请选择销售平台"
               class="!w-1/1"
             >
               <el-option
                 v-for="item in customerList"
                 :key="item.id"
                 :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="销售人员" prop="saleUserId">
-            <el-select
-              v-model="formData.saleUserId"
-              clearable
-              filterable
-              placeholder="请选择销售人员"
-              class="!w-1/1"
-            >
-              <el-option
-                v-for="item in userList"
-                :key="item.id"
-                :label="item.nickname"
                 :value="item.id"
               />
             </el-select>
@@ -80,66 +62,15 @@
       <!-- 子表的表单 -->
       <ContentWrap>
         <el-tabs v-model="subTabsName" class="-mt-15px -mb-10px">
-          <el-tab-pane label="订单产品清单" name="item">
+          <el-tab-pane label="销售产品清单" name="item">
             <SaleOrderItemForm ref="itemFormRef" :items="formData.items" :disabled="disabled" />
           </el-tab-pane>
         </el-tabs>
       </ContentWrap>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="优惠率（%）" prop="discountPercent">
-            <el-input-number
-              v-model="formData.discountPercent"
-              controls-position="right"
-              :min="0"
-              :precision="2"
-              placeholder="请输入优惠率"
-              class="!w-1/1"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="收款优惠" prop="discountPrice">
-            <el-input
-              disabled
-              v-model="formData.discountPrice"
-              :formatter="erpPriceInputFormatter"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="优惠后金额">
+          <el-form-item label="总销售金额">
             <el-input disabled v-model="formData.totalPrice" :formatter="erpPriceInputFormatter" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="结算账户" prop="accountId">
-            <el-select
-              v-model="formData.accountId"
-              clearable
-              filterable
-              placeholder="请选择结算账户"
-              class="!w-1/1"
-            >
-              <el-option
-                v-for="item in accountList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="收取订金" prop="depositPrice">
-            <el-input-number
-              v-model="formData.depositPrice"
-              controls-position="right"
-              :min="0"
-              :precision="2"
-              placeholder="请输入收取订金"
-              class="!w-1/1"
-            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -186,12 +117,12 @@ const formData = ref({
   no: undefined // 订单单号，后端返回
 })
 const formRules = reactive({
-  customerId: [{ required: true, message: '客户不能为空', trigger: 'blur' }],
+  customerId: [{ required: true, message: '销售平台不能为空', trigger: 'blur' }],
   orderTime: [{ required: true, message: '订单时间不能为空', trigger: 'blur' }]
 })
 const disabled = computed(() => formType.value === 'detail')
 const formRef = ref() // 表单 Ref
-const customerList = ref<CustomerVO[]>([]) // 客户列表
+const customerList = ref<CustomerVO[]>([]) // 销售平台列表
 const accountList = ref<AccountVO[]>([]) // 账户列表
 const userList = ref<UserApi.UserVO[]>([]) // 用户列表
 
@@ -230,7 +161,7 @@ const open = async (type: string, id?: number) => {
       formLoading.value = false
     }
   }
-  // 加载客户列表
+  // 加载销售平台列表
   customerList.value = await CustomerApi.getCustomerSimpleList()
   // 加载用户列表
   userList.value = await UserApi.getSimpleUserList()

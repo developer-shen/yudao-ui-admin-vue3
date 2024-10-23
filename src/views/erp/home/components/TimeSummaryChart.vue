@@ -1,7 +1,11 @@
 <template>
   <el-card shadow="never">
     <template #header>
-      <CardTitle :title="props.title" />
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <CardTitle :title="props.title" />
+        <!-- 具名插槽，用于在标题右侧插入按钮 -->
+        <slot name="header-right"></slot>
+      </div>
     </template>
     <!-- 折线图 -->
     <Echart :height="300" :options="lineChartOptions" />
@@ -52,7 +56,6 @@ const lineChartOptions = reactive<EChartsOption>({
   },
   tooltip: {
     trigger: 'axis',
-   
   },
   xAxis: {
     type: 'category',
@@ -99,8 +102,11 @@ watch(
       type: 'line',
       smooth: true,
       label: {
-        show: true,
-        position: 'top'
+        show: true, // 开启 label 显示
+        formatter: function (params) {
+          // 如果当前数据值为 0，则返回空字符串，隐藏 label
+          return params.value === 0 ? '' : params.value;
+       }
       },
       data: seriesData[key] // 使用对应字段的数据
     }))

@@ -115,9 +115,6 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column width="30" label="选择" type="selection" />
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
-      <el-table-column label="订单平台" align="center" prop="customerName" />
       <el-table-column
         label="订单时间"
         align="center"
@@ -125,12 +122,14 @@
         :formatter="dateFormatter2"
         width="120px"
       />
+      <el-table-column label="订单平台" align="center" prop="customerName" />
       <el-table-column
         label="总数量"
         align="center"
         prop="totalCount"
         :formatter="erpCountTableColumnFormatter"
       />
+      <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
       <el-table-column
         label="金额合计"
         align="center"

@@ -22,12 +22,26 @@ export const SaleStatisticsApi = {
   },
 
   // 获得销售订单时间段统计
-  getSaleNumTimeSummary: async (): Promise<ErpSaleTimeSummaryRespVO[]> => {
-    return await request.get({ url: `/erp/sale-statistics/num-time-summary` })
+  getSaleNumTimeSummary: async (count: number): Promise<ErpSaleTimeSummaryRespVO[]> => {
+    return await request.get({
+      url: '/erp/sale-statistics/num-time-summary',
+      params:  { count } 
+    });
   },
 
   // 获得销售金额时间段统计
-  getSaleMoneyTimeSummary: async (): Promise<ErpSaleTimeSummaryRespVO[]> => {
-    return await request.get({ url: `/erp/sale-statistics/money-time-summary` })
-  }
+  getSaleMoneyTimeSummary: async (count: number): Promise<ErpSaleTimeSummaryRespVO[]> => {
+    return await request.get({
+      url: '/erp/sale-statistics/money-time-summary',
+      params:  { count } 
+    });
+  },
+
+  // 获得skc销售订单时间段统计
+  getSaleSkcNumTimeSummary: async (count: number, customerId: number): Promise<ErpSaleTimeSummaryRespVO[]> => {
+    return await request.get({
+      url: '/erp/sale-statistics/skc-num-time-summary',
+      params: {count, customerId} 
+    });
+  },
 }

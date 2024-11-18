@@ -154,7 +154,7 @@
         <el-skeleton :loading="loading" animated>
           <el-card shadow="hover" class="mb-8px">
             <el-skeleton :loading="loading" animated>
-              <Echart :options="pieOptionsData" :height="200" />
+              <Echart :options="pieOptionsData" :height="320" />
             </el-skeleton>
           </el-card>
         </el-skeleton>
@@ -165,7 +165,7 @@
         <el-skeleton :loading="loading" animated>
           <el-card shadow="hover" class="mb-8px">
             <el-skeleton :loading="loading" animated>
-              <Echart :options="barOptionsData" :height="200" />
+              <Echart :options="barOptionsData" :height="320" />
             </el-skeleton>
           </el-card>
         </el-skeleton>
@@ -202,7 +202,6 @@
         </template>
       </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="创建者" align="center" prop="creatorName" />
       <el-table-column
         label="创建时间"
         align="center"
@@ -312,7 +311,7 @@ const pieOptions: EChartsOption = {
       name: '付款金额',
       type: 'pie',
       radius: '70%',
-      center: ['60%', '50%'],
+      center: ['50%', '50%'],
       data: []
     }
   ]

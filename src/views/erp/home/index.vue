@@ -65,18 +65,33 @@
     <!-- skc销售订单统计 -->
     <el-row :gutter="16" class="row">
       <el-col :md="12" :sm="12" :xs="12" :loading="loading">
-        <TimeSummaryChart title="skc销售订单：temu" :value="saleTemuSkcNumTimeSummaryList" >
+        <TimeSummaryChart title="skc销售订单：temu（大陆）" :value="saleTemuCNSkcNumTimeSummaryList" >
           <!-- 在标题右侧添加按钮 -->
           <template #header-right>
             <el-button-group>
-              <el-button type="primary" @click="handleButtonClick('C',7)">近一周</el-button>
-              <el-button type="primary" @click="handleButtonClick('C',31)">近一月</el-button>
-              <el-button type="primary" @click="handleButtonClick('C',365)">近一年</el-button>
+              <el-button type="primary" @click="handleButtonClick('C1',7)">近一周</el-button>
+              <el-button type="primary" @click="handleButtonClick('C1',31)">近一月</el-button>
+              <el-button type="primary" @click="handleButtonClick('C1',365)">近一年</el-button>
             </el-button-group>
           </template>
         </TimeSummaryChart>
       </el-col>
       <el-col :md="12" :sm="12" :xs="12" :loading="loading">
+        <TimeSummaryChart title="skc销售订单：temu（香港）" :value="saleTemuHKSkcNumTimeSummaryList" >
+          <!-- 在标题右侧添加按钮 -->
+          <template #header-right>
+            <el-button-group>
+              <el-button type="primary" @click="handleButtonClick('C2',7)">近一周</el-button>
+              <el-button type="primary" @click="handleButtonClick('C2',31)">近一月</el-button>
+              <el-button type="primary" @click="handleButtonClick('C2',365)">近一年</el-button>
+            </el-button-group>
+          </template>
+        </TimeSummaryChart>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="16" class="row">
+      <el-col :md="24" :sm="24" :xs="24" :loading="loading">
         <TimeSummaryChart title="skc销售订单：tiktok" :value="saleTiktokSkcNumTimeSummaryList" >
           <!-- 在标题右侧添加按钮 -->
           <template #header-right>
@@ -89,6 +104,7 @@
         </TimeSummaryChart>
       </el-col>
     </el-row>
+
   </div>
 </template>
 <script lang="ts" setup>
@@ -111,11 +127,13 @@ const loading = ref(true) // 加载中
 
 /** 获得销售订单统计 */
 const saleNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // 销售时段统计
-const saleTemuSkcNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // temu-skc销售时段统计
+const saleTemuCNSkcNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // temu（大陆）-skc销售时段统计
+const saleTemuHKSkcNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // temu（香港）-skc销售时段统计
 const saleTiktokSkcNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // tiktok-skc销售时段统计
 const getSaleNumSummary = async () => {
   saleNumTimeSummaryList.value = await SaleStatisticsApi.getSaleNumTimeSummary(31)
-  saleTemuSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(7,4)
+  saleTemuHKSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(7,3)
+  saleTemuCNSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(7,4)
   saleTiktokSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(7,5)
 }
 
@@ -133,8 +151,11 @@ const handleButtonClick = async (type: string, count: number) => {
   else if (type === 'B'){
     saleMoneyTimeSummaryList.value = await SaleStatisticsApi.getSaleMoneyTimeSummary(count)
   }
-  else if (type === 'C'){
-    saleTemuSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(count, 4)
+  else if (type === 'C1'){
+    saleTemuCNSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(count, 4)
+  }
+  else if (type === 'C2'){
+    saleTemuHKSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(count, 3)
   }
   else if (type === 'D'){
     saleTiktokSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(count, 5)

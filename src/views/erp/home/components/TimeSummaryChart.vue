@@ -16,7 +16,9 @@
 import { EChartsOption } from 'echarts'
 import { CardTitle } from '@/components/Card'
 import { propTypes } from '@/utils/propTypes'
-
+import { useAppStore } from '@/store/modules/app'
+const appStore = useAppStore()
+const isDark = ref(appStore.getIsDark)
 /** 统计卡片 */
 defineOptions({ name: 'MemberStatisticsCard' })
 
@@ -38,7 +40,7 @@ const lineChartOptions = reactive<EChartsOption>({
     top: 0, // 设置 legend 距离顶部的距离
     left: 'center', // 将 legend 放置在图表上方居中
     textStyle: {
-      color: '#ffffff',  // 文字颜色
+      // color: '#ffffff',  // 文字颜色
       fontSize: 15,   // 文字大小
     },
     icon: 'roundRect',  // 使用圆角矩形作为图例图标
@@ -79,6 +81,10 @@ watch(
     if (!val || !Array.isArray(val)) {
       return
     }
+    
+    // 文字颜色根据主题动态变化
+    lineChartOptions.legend.textStyle.color = isDark.value ? '#fff' : '#000'; 
+    
     // 提取时间数据 (x轴)
     const times = val.map(item => item.time)
     

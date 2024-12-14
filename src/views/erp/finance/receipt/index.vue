@@ -368,7 +368,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await FinanceReceiptApi.exportFinanceReceipt(queryParams)
-    download.excel(data, '收款单.xls')
+    download.excel(data, '收款单.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

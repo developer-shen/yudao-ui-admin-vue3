@@ -415,7 +415,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await SaleReturnApi.exportSaleReturn(queryParams)
-    download.excel(data, '销售退货.xls')
+    download.excel(data, '销售退货.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

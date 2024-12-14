@@ -300,7 +300,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await SmsTemplateApi.exportSmsTemplate(queryParams)
-    download.excel(data, '短信模板.xls')
+    download.excel(data, '短信模板.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

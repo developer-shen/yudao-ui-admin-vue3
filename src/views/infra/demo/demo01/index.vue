@@ -200,7 +200,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await Demo01ContactApi.exportDemo01Contact(queryParams)
-    download.excel(data, '示例联系人.xls')
+    download.excel(data, '示例联系人.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

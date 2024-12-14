@@ -212,7 +212,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ApiAccessLogApi.exportApiAccessLog(queryParams)
-    download.excel(data, 'API 访问日志.xls')
+    download.excel(data, 'API 访问日志.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

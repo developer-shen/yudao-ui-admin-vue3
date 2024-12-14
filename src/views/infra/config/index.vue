@@ -214,7 +214,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ConfigApi.exportConfig(queryParams)
-    download.excel(data, '参数配置.xls')
+    download.excel(data, '参数配置.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

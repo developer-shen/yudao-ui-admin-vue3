@@ -351,7 +351,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await StockOutApi.exportStockOut(queryParams)
-    download.excel(data, '其它出库单.xls')
+    download.excel(data, '其它出库单.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

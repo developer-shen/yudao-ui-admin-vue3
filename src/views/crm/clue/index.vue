@@ -256,7 +256,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ClueApi.exportClue(queryParams)
-    download.excel(data, '线索.xls')
+    download.excel(data, '线索.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

@@ -19,7 +19,7 @@
       :disabled="formLoading"
       :limit="1"
       :on-exceed="handleExceed"
-      accept=".xlsx, .xls"
+      accept=".xlsx, .xlsx"
       action="none"
       drag
     >
@@ -153,6 +153,6 @@ const handleExceed = (): void => {
 /** 下载模板操作 */
 const importTemplate = async () => {
   const res = await CustomerApi.importCustomerTemplate()
-  download.excel(res, '客户导入模版.xls')
+  download.excel(res, '客户导入模版.xlsx')
 }
 </script>

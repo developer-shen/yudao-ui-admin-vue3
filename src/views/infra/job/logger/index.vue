@@ -186,7 +186,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await JobLogApi.exportJobLog(queryParams)
-    download.excel(data, '定时任务执行日志.xls')
+    download.excel(data, '定时任务执行日志.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

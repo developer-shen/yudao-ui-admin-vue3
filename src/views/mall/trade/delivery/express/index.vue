@@ -175,7 +175,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await DeliveryExpressApi.exportDeliveryExpressApi(queryParams)
-    download.excel(data, '快递公司.xls')
+    download.excel(data, '快递公司.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

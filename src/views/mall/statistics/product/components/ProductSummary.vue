@@ -294,7 +294,7 @@ const handleExport = async () => {
     exportLoading.value = true
     const times = shortcutDateRangePicker.value.times
     const data = await ProductStatisticsApi.exportProductStatisticsExcel({ times })
-    download.excel(data, '商品状况.xls')
+    download.excel(data, '商品状况.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

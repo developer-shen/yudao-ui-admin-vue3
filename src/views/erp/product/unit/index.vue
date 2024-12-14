@@ -184,7 +184,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ProductUnitApi.exportProductUnit(queryParams)
-    download.excel(data, '产品单位.xls')
+    download.excel(data, '产品单位.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

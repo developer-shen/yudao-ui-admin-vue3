@@ -333,7 +333,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await StockCheckApi.exportStockCheck(queryParams)
-    download.excel(data, '其它盘点单.xls')
+    download.excel(data, '其它盘点单.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

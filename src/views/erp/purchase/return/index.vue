@@ -415,7 +415,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await PurchaseReturnApi.exportPurchaseReturn(queryParams)
-    download.excel(data, '采购退货.xls')
+    download.excel(data, '采购退货.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

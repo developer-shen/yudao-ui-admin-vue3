@@ -342,7 +342,7 @@ const handleExport = async () => {
     exportLoading.value = true
     const times = shortcutDateRangePicker.value.times
     const data = await TradeStatisticsApi.exportTradeStatisticsExcel({ times })
-    download.excel(data, '交易状况.xls')
+    download.excel(data, '交易状况.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

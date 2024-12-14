@@ -411,7 +411,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await FinancePaymentListApi.exportFinancePaymentList(queryParams)
-    download.excel(data, 'ERP 付款清单.xls')
+    download.excel(data, 'ERP 付款清单.xlsxx')
   } catch {
   } finally {
     exportLoading.value = false

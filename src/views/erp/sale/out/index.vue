@@ -410,7 +410,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await SaleOutApi.exportSaleOut(queryParams)
-    download.excel(data, '销售出库.xls')
+    download.excel(data, '销售出库.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

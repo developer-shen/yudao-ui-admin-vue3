@@ -207,7 +207,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await JobApi.exportJob(queryParams)
-    download.excel(data, '定时任务.xls')
+    download.excel(data, '定时任务.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

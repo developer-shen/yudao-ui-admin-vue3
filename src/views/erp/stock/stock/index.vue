@@ -169,7 +169,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await StockApi.exportStock(queryParams)
-    download.excel(data, '产品库存.xls')
+    download.excel(data, '产品库存.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

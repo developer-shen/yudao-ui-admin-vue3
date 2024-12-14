@@ -349,7 +349,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ContractApi.exportContract(queryParams)
-    download.excel(data, '合同.xls')
+    download.excel(data, '合同.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

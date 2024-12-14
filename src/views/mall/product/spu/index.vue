@@ -412,7 +412,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ProductSpuApi.exportSpu(queryParams)
-    download.excel(data, '商品列表.xls')
+    download.excel(data, '商品列表.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

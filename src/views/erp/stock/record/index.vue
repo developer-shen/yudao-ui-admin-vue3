@@ -229,7 +229,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await StockRecordApi.exportStockRecord(queryParams)
-    download.excel(data, '产品库存明细.xls')
+    download.excel(data, '产品库存明细.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

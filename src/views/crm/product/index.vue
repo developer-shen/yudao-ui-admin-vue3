@@ -211,7 +211,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ProductApi.exportProduct(queryParams)
-    download.excel(data, '产品.xls')
+    download.excel(data, '产品.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

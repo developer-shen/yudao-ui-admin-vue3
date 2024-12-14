@@ -187,7 +187,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await SupplierApi.exportSupplier(queryParams)
-    download.excel(data, 'ERP 供应商.xls')
+    download.excel(data, 'ERP 供应商.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

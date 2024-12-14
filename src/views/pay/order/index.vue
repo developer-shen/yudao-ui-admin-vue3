@@ -247,7 +247,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await OrderApi.exportOrder(queryParams)
-    download.excel(data, '支付订单.xls')
+    download.excel(data, '支付订单.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

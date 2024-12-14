@@ -11,7 +11,7 @@
       :on-error="submitFormError"
       :on-exceed="handleExceed"
       :on-success="submitFormSuccess"
-      accept=".xlsx, .xls"
+      accept=".xlsx, .xlsx"
       drag
     >
       <Icon icon="ep:upload" />
@@ -133,6 +133,6 @@ const handleExceed = (): void => {
 /** 下载模板操作 */
 const importTemplate = async () => {
   const res = await UserApi.importUserTemplate()
-  download.excel(res, '用户导入模版.xls')
+  download.excel(res, '用户导入模版.xlsx')
 }
 </script>

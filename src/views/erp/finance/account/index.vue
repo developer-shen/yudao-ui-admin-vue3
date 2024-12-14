@@ -221,7 +221,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await AccountApi.exportAccount(queryParams)
-    download.excel(data, 'ERP 结算账户.xls')
+    download.excel(data, 'ERP 结算账户.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

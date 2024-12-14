@@ -308,7 +308,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ReceivablePlanApi.exportReceivablePlan(queryParams)
-    download.excel(data, '回款计划.xls')
+    download.excel(data, '回款计划.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

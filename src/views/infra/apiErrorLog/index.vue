@@ -238,7 +238,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ApiErrorLogApi.exportApiErrorLog(queryParams)
-    download.excel(data, '异常日志.xls')
+    download.excel(data, '异常日志.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

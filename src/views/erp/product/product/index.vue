@@ -47,8 +47,21 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="skc货号" align="center" prop="name" />
+      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="附件" align="center" prop="fileUrl" width="110px">
+        <template #default="{ row }">
+          <el-image
+            v-if="row.fileUrl"
+            class="h-80px w-80px"
+            lazy
+            :src="row.fileUrl"
+            :preview-src-list="[row.fileUrl]"
+            preview-teleported
+            fit="cover"
+          />
+        </template>
+      </el-table-column>
       <el-table-column
         label="采购价格"
         align="center"

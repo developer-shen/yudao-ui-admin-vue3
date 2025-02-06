@@ -64,7 +64,7 @@
 
     <!-- skc销售订单统计 -->
     <el-row :gutter="16" class="row">
-      <el-col :md="12" :sm="12" :xs="12" :loading="loading">
+      <el-col :md="24" :sm="24" :xs="24" :loading="loading">
         <TimeSummaryChart title="skc销售订单：temu（大陆）" :value="saleTemuCNSkcNumTimeSummaryList" >
           <!-- 在标题右侧添加按钮 -->
           <template #header-right>
@@ -76,7 +76,9 @@
           </template>
         </TimeSummaryChart>
       </el-col>
-      <el-col :md="12" :sm="12" :xs="12" :loading="loading">
+    </el-row>
+    <el-row :gutter="16" class="row">
+      <el-col :md="24" :sm="24" :xs="24" :loading="loading">
         <TimeSummaryChart title="skc销售订单：temu（香港）" :value="saleTemuHKSkcNumTimeSummaryList" >
           <!-- 在标题右侧添加按钮 -->
           <template #header-right>
@@ -132,9 +134,10 @@ const saleTemuHKSkcNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // tem
 const saleTiktokSkcNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // tiktok-skc销售时段统计
 const getSaleNumSummary = async () => {
   saleNumTimeSummaryList.value = await SaleStatisticsApi.getSaleNumTimeSummary(31)
-  saleTemuHKSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(7,3)
-  saleTemuCNSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(7,4)
-  saleTiktokSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(7,5)
+  //第二个参数为店铺id：temu香港=3，temu大陆=4.tiktok=5
+  saleTemuHKSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(31,3)
+  saleTemuCNSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(31,4)
+  saleTiktokSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(31,5)
 }
 
 /** 获得销售金额统计 */

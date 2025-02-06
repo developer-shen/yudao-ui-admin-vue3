@@ -14,7 +14,7 @@
             <el-input v-model="formData.name" placeholder="请输入skc货号" />
           </el-form-item>
         </el-col>
-       
+
         <el-col :span="12">
           <el-form-item label="状态" prop="status">
             <el-radio-group v-model="formData.status">
@@ -28,7 +28,7 @@
             </el-radio-group>
           </el-form-item>
         </el-col>
-       
+
         <el-col :span="12">
           <el-form-item label="采购价格" prop="purchasePrice">
             <el-input-number
@@ -54,6 +54,11 @@
         <el-col :span="24">
           <el-form-item label="备注" prop="remark">
             <el-input type="textarea" v-model="formData.remark" placeholder="请输入备注" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="附件" prop="fileUrl">
+            <UploadImg v-model="formData.fileUrl" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -91,6 +96,7 @@ const formData = ref({
   status: undefined,
   standard: undefined,
   remark: undefined,
+  fileUrl: undefined,
   expiryDay: undefined,
   weight: undefined,
   purchasePrice: undefined,
@@ -163,6 +169,7 @@ const resetForm = () => {
     status: CommonStatusEnum.ENABLE,
     standard: undefined,
     remark: undefined,
+    fileUrl: undefined,
     expiryDay: undefined,
     weight: undefined,
     purchasePrice: undefined,

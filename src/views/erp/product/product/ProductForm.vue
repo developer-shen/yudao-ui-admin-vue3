@@ -10,14 +10,26 @@
     >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="spu货号" prop="spuCode">
-            <el-input v-model="formData.spuCode" placeholder="请输入spu货号" />
+          <el-form-item label="spu货号" prop="barCode">
+            <el-input v-model="formData.barCode" placeholder="请输入spu货号" />
           </el-form-item>
         </el-col>
-
         <el-col :span="12">
-          <el-form-item label="skc货号" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入skc货号" />
+          <el-form-item label="状态" prop="status">
+            <el-radio-group v-model="formData.status">
+              <el-radio
+                v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
+                :key="dict.value"
+                :value="dict.value"
+              >
+                {{ dict.label }}
+              </el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="产品名称" prop="name">
+            <el-input v-model="formData.name" placeholder="请输入产品名称" />
           </el-form-item>
         </el-col>
 
@@ -53,19 +65,6 @@
             <UploadImg v-model="formData.fileUrl" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="状态" prop="status">
-            <el-radio-group v-model="formData.status">
-              <el-radio
-                v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
-                :key="dict.value"
-                :value="dict.value"
-              >
-                {{ dict.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
       </el-row>
     </el-form>
     <template #footer>
@@ -94,7 +93,6 @@ const formLoading = ref(false) // 表单的加载中：1）修改时的数据加
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
   id: undefined,
-  spuCode: undefined,
   name: undefined,
   barCode: undefined,
   categoryId: undefined,
@@ -110,8 +108,8 @@ const formData = ref({
   minPrice: undefined
 })
 const formRules = reactive({
-  spuCode: [{ required: true, message: 'spu货号不能为空', trigger: 'blur' }],
-  name: [{ required: true, message: 'skc货号不能为空', trigger: 'blur' }],
+  barCode: [{ required: true, message: 'spu货号不能为空', trigger: 'blur' }],
+  name: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }],
   status: [{ required: true, message: '产品状态不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
@@ -169,7 +167,6 @@ const submitForm = async () => {
 const resetForm = () => {
   formData.value = {
     id: undefined,
-    spuCode: undefined,
     name: undefined,
     barCode: undefined,
     categoryId: undefined,

@@ -37,10 +37,10 @@ export const SaleStatisticsApi = {
     });
   },
 
-  // 获得skc销售订单时间段统计
-  getSaleSkcNumTimeSummary: async (count: number, customerId: number): Promise<ErpSaleTimeSummaryRespVO[]> => {
+  // 获得spu销售订单时间段统计
+  getSaleSpuNumTimeSummary: async (count: number, customerId: number): Promise<ErpSaleTimeSummaryRespVO[]> => {
     return await request.get({
-      url: '/erp/sale-statistics/skc-num-time-summary',
+      url: '/erp/sale-statistics/spu-num-time-summary',
       params: {count, customerId} 
     });
   },

@@ -62,10 +62,10 @@
       </el-col>
     </el-row>
 
-    <!-- skc销售订单统计 -->
+    <!-- spu销售订单统计 -->
     <el-row :gutter="16" class="row">
       <el-col :md="24" :sm="24" :xs="24" :loading="loading">
-        <TimeSummaryChart title="skc销售订单：temu（大陆）" :value="saleTemuCNSkcNumTimeSummaryList" >
+        <TimeSummaryChart title="spu销售订单：temu（大陆）" :value="saleTemuCNSpuNumTimeSummaryList" >
           <!-- 在标题右侧添加按钮 -->
           <template #header-right>
             <el-button-group>
@@ -79,7 +79,7 @@
     </el-row>
     <el-row :gutter="16" class="row">
       <el-col :md="24" :sm="24" :xs="24" :loading="loading">
-        <TimeSummaryChart title="skc销售订单：temu（香港）" :value="saleTemuHKSkcNumTimeSummaryList" >
+        <TimeSummaryChart title="spu销售订单：temu（香港）" :value="saleTemuHKSpuNumTimeSummaryList" >
           <!-- 在标题右侧添加按钮 -->
           <template #header-right>
             <el-button-group>
@@ -94,7 +94,7 @@
 
     <el-row :gutter="16" class="row">
       <el-col :md="24" :sm="24" :xs="24" :loading="loading">
-        <TimeSummaryChart title="skc销售订单：tiktok" :value="saleTiktokSkcNumTimeSummaryList" >
+        <TimeSummaryChart title="spu销售订单：tiktok" :value="saleTiktokSpuNumTimeSummaryList" >
           <!-- 在标题右侧添加按钮 -->
           <template #header-right>
             <el-button-group>
@@ -129,15 +129,15 @@ const loading = ref(true) // 加载中
 
 /** 获得销售订单统计 */
 const saleNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // 销售时段统计
-const saleTemuCNSkcNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // temu（大陆）-skc销售时段统计
-const saleTemuHKSkcNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // temu（香港）-skc销售时段统计
-const saleTiktokSkcNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // tiktok-skc销售时段统计
+const saleTemuCNSpuNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // temu（大陆）-spu销售时段统计
+const saleTemuHKSpuNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // temu（香港）-spu销售时段统计
+const saleTiktokSpuNumTimeSummaryList = ref<ErpSaleTimeSummaryRespVO[]>() // tiktok-spu销售时段统计
 const getSaleNumSummary = async () => {
   saleNumTimeSummaryList.value = await SaleStatisticsApi.getSaleNumTimeSummary(31)
   //第二个参数为店铺id：temu香港=3，temu大陆=4.tiktok=5
-  saleTemuHKSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(31,3)
-  saleTemuCNSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(31,4)
-  saleTiktokSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(31,5)
+  saleTemuHKSpuNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSpuNumTimeSummary(31,3)
+  saleTemuCNSpuNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSpuNumTimeSummary(31,4)
+  saleTiktokSpuNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSpuNumTimeSummary(31,5)
 }
 
 /** 获得销售金额统计 */
@@ -155,13 +155,13 @@ const handleButtonClick = async (type: string, count: number) => {
     saleMoneyTimeSummaryList.value = await SaleStatisticsApi.getSaleMoneyTimeSummary(count)
   }
   else if (type === 'C1'){
-    saleTemuCNSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(count, 4)
+    saleTemuCNSpuNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSpuNumTimeSummary(count, 4)
   }
   else if (type === 'C2'){
-    saleTemuHKSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(count, 3)
+    saleTemuHKSpuNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSpuNumTimeSummary(count, 3)
   }
   else if (type === 'D'){
-    saleTiktokSkcNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSkcNumTimeSummary(count, 5)
+    saleTiktokSpuNumTimeSummaryList.value = await SaleStatisticsApi.getSaleSpuNumTimeSummary(count, 5)
   }
 };
 

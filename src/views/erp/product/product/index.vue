@@ -11,19 +11,19 @@
       :inline="true"
       label-width="68px"
     >
-    <el-form-item label="spu货号" prop="spuCode">
+      <el-form-item label="spu货号" prop="barCode">
         <el-input
-          v-model="queryParams.spuCode"
-          placeholder="请输入spu货号"
+          v-model="queryParams.barCode"
+          placeholder="请输入skc货号"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="skc货号" prop="name">
+      <el-form-item label="产品名称" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入skc货号"
+          placeholder="请输入产品名称"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
@@ -55,10 +55,9 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" :span-method="mergeCells">
-      <el-table-column label="spu货号" align="center" prop="spuCode" />
-      <el-table-column label="skc货号" align="center" prop="name" />
-      <el-table-column label="备注" align="center" prop="remark" />
+    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" >
+      <el-table-column label="spu货号" align="center" prop="barCode" />
+      <el-table-column label="产品名称" align="center" prop="name" />
       <el-table-column label="附件" align="center" prop="fileUrl" width="110px">
         <template #default="{ row }">
           <el-image
@@ -84,6 +83,7 @@
         prop="salePrice"
         :formatter="erpPriceTableColumnFormatter"
       />
+      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="状态" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
@@ -152,8 +152,8 @@ const total = ref(0) // 列表的总页数
 const queryParams = reactive({
   pageNo: 1,
   pageSize: 10,
-  spuCode: undefined,
   name: undefined,
+  barCode: undefined,
   categoryId: undefined
 })
 const queryFormRef = ref() // 搜索的表单
@@ -167,7 +167,6 @@ const getList = async () => {
     const data = await ProductApi.getProductPage(queryParams)
     list.value = data.list
     total.value = data.total
-    calculateSpan(); // 计算 spuCode 合并行数
   } finally {
     loading.value = false
   }
@@ -219,37 +218,6 @@ const handleExport = async () => {
   }
 }
 
-const spanArr = ref<number[]>([]); // 存储行合并的数组
-const posMap = new Map(); // 记录 spuCode 的首次出现位置
-
-/** 计算 spuCode 合并规则 */
-const calculateSpan = () => {
-  spanArr.value = [];
-  posMap.clear();
-  let pos = 0;
-
-  list.value.forEach((item, index) => {
-    if (!posMap.has(item.spuCode)) {
-      posMap.set(item.spuCode, index);
-      spanArr.value[index] = 1; // 第一行正常显示
-      pos = index;
-    } else {
-      spanArr.value[index] = 0; // 后续相同的行隐藏
-      spanArr.value[pos] += 1; // 增加合并行数
-    }
-  });
-};
-
-/** 合并表格的函数 */
-const mergeCells = ({ row, column, rowIndex, columnIndex }) => {
-  if (columnIndex === 0) { // 只合并 spuCode 列
-    return {
-      rowspan: spanArr.value[rowIndex],
-      colspan: 1,
-    };
-  }
-};
-
 /** 初始化 **/
 onMounted(async () => {
   await getList()
@@ -258,6 +226,5 @@ onMounted(async () => {
   categoryList.value = handleTree(categoryData, 'id', 'parentId')
 
   await getList();
-  calculateSpan(); // 计算合并规则
 })
 </script>

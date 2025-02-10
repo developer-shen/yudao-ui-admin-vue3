@@ -103,12 +103,13 @@
       :data="list"
       :stripe="true"
       :show-overflow-tooltip="true"
+      show-summary
+      :summary-method="footerMethod"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column width="30" label="选择" type="selection" />
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="skc货号" align="center" prop="productNames" min-width="200" />
+      <el-table-column width="80" label="选择" type="selection" />
       <el-table-column label="供应商" align="center" prop="supplierName" />
+      <el-table-column label="skc货号" align="center" prop="productNames" min-width="200" />
       <el-table-column
         label="总数量"
         align="center"
@@ -315,6 +316,34 @@ const handleExport = async () => {
 const selectionList = ref<PurchaseOrderVO[]>([])
 const handleSelectionChange = (rows: PurchaseOrderVO[]) => {
   selectionList.value = rows
+}
+
+/** 合计行 */
+const footerMethod = (params: { columns: any; data: any }) => {
+  const { columns, data } = params
+  const sums: (string | number)[] = []
+
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      // 第一列显示 "合计"
+      sums[index] = '合计'
+      return
+    }
+
+    // 只计算数值列
+    const key = column.property
+    if (['totalCount', 'totalProductPrice'].includes(key)) {
+      const total = data.reduce((sum: number, row: any) => {
+        const value = parseFloat(row[key])
+        return sum + (isNaN(value) ? 0 : value)
+      }, 0)
+      sums[index] = total.toFixed(2) // 保留两位小数
+    } else {
+      sums[index] = '' // 其他列不显示合计
+    }
+  })
+
+  return sums
 }
 
 /** 初始化 **/

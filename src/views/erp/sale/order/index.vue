@@ -112,29 +112,31 @@
       :data="list"
       :stripe="true"
       :show-overflow-tooltip="true"
+      show-summary
+      :summary-method="footerMethod"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column width="30" label="选择" type="selection" />
-      <el-table-column
-        label="订单时间"
-        align="center"
-        prop="orderTime"
-        :formatter="dateFormatter2"
-        width="120px"
-      />
+      <el-table-column width="80" label="选择" type="selection" />
       <el-table-column label="订单平台" align="center" prop="customerName" />
+      <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
       <el-table-column
         label="总数量"
         align="center"
         prop="totalCount"
         :formatter="erpCountTableColumnFormatter"
       />
-      <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
       <el-table-column
         label="金额合计"
         align="center"
         prop="totalProductPrice"
         :formatter="erpPriceTableColumnFormatter"
+      />
+      <el-table-column
+        label="订单时间"
+        align="center"
+        prop="orderTime"
+        :formatter="dateFormatter2"
+        width="120px"
       />
       <el-table-column label="状态" align="center" fixed="right" width="90" prop="status">
         <template #default="scope">
@@ -317,6 +319,34 @@ const handleExport = async () => {
 const selectionList = ref<SaleOrderVO[]>([])
 const handleSelectionChange = (rows: SaleOrderVO[]) => {
   selectionList.value = rows
+}
+
+/** 合计行 */
+const footerMethod = (params: { columns: any; data: any }) => {
+  const { columns, data } = params
+  const sums: (string | number)[] = []
+
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      // 第一列显示 "合计"
+      sums[index] = '合计'
+      return
+    }
+
+    // 只计算数值列
+    const key = column.property
+    if (['totalCount', 'totalProductPrice'].includes(key)) {
+      const total = data.reduce((sum: number, row: any) => {
+        const value = parseFloat(row[key])
+        return sum + (isNaN(value) ? 0 : value)
+      }, 0)
+      sums[index] = total.toFixed(2) // 保留两位小数
+    } else {
+      sums[index] = '' // 其他列不显示合计
+    }
+  })
+
+  return sums
 }
 
 /** 初始化 **/

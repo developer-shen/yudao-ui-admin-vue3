@@ -14,7 +14,7 @@
       <el-form-item label="spu货号" prop="barCode">
         <el-input
           v-model="queryParams.barCode"
-          placeholder="请输入skc货号"
+          placeholder="请输入spc货号"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"

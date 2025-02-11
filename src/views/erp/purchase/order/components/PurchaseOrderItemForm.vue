@@ -10,7 +10,7 @@
   >
     <el-table :data="formData" show-summary :summary-method="getSummaries" class="-mt-10px">
       <el-table-column label="序号" type="index" align="center" width="60" />
-      <el-table-column label="skc货号" min-width="180">
+      <el-table-column label="spu货号" min-width="180">
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.productId`" :rules="formRules.productId" class="mb-0px!">
             <el-select
@@ -23,7 +23,7 @@
               <el-option
                 v-for="item in productList"
                 :key="item.id"
-                :label="item.name"
+                :label="item.barCode"
                 :value="item.id"
               />
             </el-select>

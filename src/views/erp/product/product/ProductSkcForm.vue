@@ -10,8 +10,8 @@
     >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="skc货号" prop="barCode">
-            <el-input v-model="formData.barCode" placeholder="请输入skc货号" />
+          <el-form-item label="spu货号" prop="barCode">
+            <el-input v-model="formData.barCode" placeholder="请输入spu货号" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -92,7 +92,7 @@ const formData = ref({
   color: undefined
 })
 const formRules = reactive({
-  barCode: [{ required: true, message: 'skc货号不能为空', trigger: 'blur' }],
+  barCode: [{ required: true, message: 'spu货号不能为空', trigger: 'blur' }],
   name: [{ required: true, message: 'skc变种名称不能为空', trigger: 'blur' }],
   status: [{ required: true, message: 'skc状态不能为空', trigger: 'blur' }]
 })

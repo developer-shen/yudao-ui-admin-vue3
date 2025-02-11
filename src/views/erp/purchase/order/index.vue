@@ -21,7 +21,7 @@
           <el-option
             v-for="item in productList"
             :key="item.id"
-            :label="item.name"
+            :label="item.barCode"
             :value="item.id"
           />
         </el-select>
@@ -42,7 +42,7 @@
           v-model="queryParams.supplierId"
           clearable
           filterable
-          placeholder="请选择供供应商"
+          placeholder="请选择供应商"
           class="!w-240px"
         >
           <el-option
@@ -109,7 +109,7 @@
     >
       <el-table-column width="80" label="选择" type="selection" />
       <el-table-column label="供应商" align="center" prop="supplierName" />
-      <el-table-column label="skc货号" align="center" prop="productNames" min-width="200" />
+      <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
       <el-table-column
         label="总数量"
         align="center"

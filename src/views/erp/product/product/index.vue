@@ -55,9 +55,9 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" >
+    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
       <el-table-column label="spu货号" align="center" prop="barCode" />
-      <el-table-column label="产品名称" align="center" prop="name" />
+      <el-table-column label="产品名称" align="center" prop="name" min-width="200" />
       <el-table-column label="附件" align="center" prop="fileUrl" width="110px">
         <template #default="{ row }">
           <el-image
@@ -69,6 +69,36 @@
             preview-teleported
             fit="cover"
           />
+        </template>
+      </el-table-column>
+      <el-table-column label="SKC变种" align="center" width="200">
+        <template #default="scope">
+          <div style="display: flex; flex-wrap: wrap; justify-content: flex-start">
+            <!-- 遍历 items 数组，生成按钮 -->
+            <template v-for="item in scope.row.items" :key="item.id">
+              <el-tooltip :content="item.name" placement="top">
+                <el-button
+                  circle
+                  size="small"
+                  :style="{ backgroundColor: item.color, margin: '1px' }"
+                  @click="openSkcForm('update', item.id, scope.row.id)"
+                >
+                  <!-- 留空，不显示文本内容 -->
+                </el-button>
+              </el-tooltip>
+            </template>
+            
+            <!-- 添加skc按钮 -->
+            <el-button
+              size="small"
+              type="primary"
+              plain
+              @click="openSkcForm('create', 0, scope.row.id)"
+              v-hasPermi="['erp:product:create']"
+            >
+              <Icon icon="ep:plus" />
+            </el-button>
+          </div>
         </template>
       </el-table-column>
       <el-table-column
@@ -126,8 +156,10 @@
     />
   </ContentWrap>
 
-  <!-- 表单弹窗：添加/修改 -->
+  <!-- 产品表单弹窗：添加/修改 -->
   <ProductForm ref="formRef" @success="getList" />
+  <!-- skc变种表单弹窗：添加/修改 -->
+  <ProductSkcForm ref="skcFormRef" @success="getList" />
 </template>
 
 <script setup lang="ts">
@@ -136,6 +168,7 @@ import download from '@/utils/download'
 import { ProductApi, ProductVO } from '@/api/erp/product/product'
 import { ProductCategoryApi, ProductCategoryVO } from '@/api/erp/product/category'
 import ProductForm from './ProductForm.vue'
+import ProductSkcForm from './ProductSkcForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
 import { defaultProps, handleTree } from '@/utils/tree'
 import { erpPriceTableColumnFormatter } from '@/utils'
@@ -184,10 +217,16 @@ const resetQuery = () => {
   handleQuery()
 }
 
-/** 添加/修改操作 */
+/** 产品 添加/修改操作 */
 const formRef = ref()
 const openForm = (type: string, id?: number) => {
   formRef.value.open(type, id)
+}
+
+/** SKC表单 添加/修改操作 */
+const skcFormRef = ref()
+const openSkcForm = (type: string, id?: number, productId?: number) => {
+  skcFormRef.value.open(type, id, productId)
 }
 
 /** 删除按钮操作 */
@@ -225,6 +264,6 @@ onMounted(async () => {
   const categoryData = await ProductCategoryApi.getProductCategorySimpleList()
   categoryList.value = handleTree(categoryData, 'id', 'parentId')
 
-  await getList();
+  await getList()
 })
 </script>

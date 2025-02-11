@@ -18,6 +18,25 @@ export interface ProductVO {
   minPrice: number // 最低价格，单位：元
 }
 
+// ERP 产品变种skc VO
+export interface ProductSkcVO {
+  id: number // 产品变种编号
+  name: string // 产品变种名称
+  barCode: string // 产品变种条码
+  productId: number // 上级产品编号
+  unitId: number // 单位编号
+  unitName?: string // 单位名字
+  status: number // 产品变种状态
+  standard: string // 产品变种规格
+  remark: string // 产品变种备注
+  expiryDay: number // 保质期天数
+  weight: number // 重量（kg）
+  purchasePrice: number // 采购价格，单位：元
+  salePrice: number // 销售价格，单位：元
+  minPrice: number // 最低价格，单位：元
+  color: string // 颜色
+}
+
 // ERP 产品 API
 export const ProductApi = {
   // 查询产品分页
@@ -35,9 +54,19 @@ export const ProductApi = {
     return await request.get({ url: `/erp/product/get?id=` + id })
   },
 
+  // 查询产品变种skc详情
+   getProductSkc: async (id: number) => {
+    return await request.get({ url: `/erp/product/getSkc?id=` + id })
+  },
+
   // 新增产品
   createProduct: async (data: ProductVO) => {
     return await request.post({ url: `/erp/product/create`, data })
+  },
+
+   // 新增产品变种skc
+   createProductSkc: async (data: ProductSkcVO) => {
+    return await request.post({ url: `/erp/product/createSkc`, data })
   },
 
   // 修改产品
@@ -45,11 +74,19 @@ export const ProductApi = {
     return await request.put({ url: `/erp/product/update`, data })
   },
 
+  // 修改产品
+   updateProductSkc: async (data: ProductSkcVO) => {
+    return await request.put({ url: `/erp/product/updateSkc`, data })
+   },
+
   // 删除产品
   deleteProduct: async (id: number) => {
     return await request.delete({ url: `/erp/product/delete?id=` + id })
   },
-
+  // 删除产品变种skc
+  deleteProductSkc: async (id: number) => {
+    return await request.delete({ url: `/erp/product/deleteSkc?id=` + id })
+  },
   // 导出产品 Excel
   exportProduct: async (params) => {
     return await request.download({ url: `/erp/product/export-excel`, params })

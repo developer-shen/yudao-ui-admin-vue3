@@ -47,7 +47,14 @@ const lineChartOptions = reactive<EChartsOption>({
       // color: '#ffffff',  // 文字颜色
       fontSize: 12 //文字大小
     },
-    icon: 'roundRect' // 使用圆角矩形作为图例图标
+    icon: 'roundRect', // 使用圆角矩形作为图例图标
+    selector: [
+      {
+        // 全选/反选
+        title: '全选',
+        type: 'inverse'
+      }
+    ]
   },
   toolbox: {
     feature: {

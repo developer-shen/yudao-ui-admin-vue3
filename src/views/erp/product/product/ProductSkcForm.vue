@@ -64,8 +64,8 @@ import { ProductApi, ProductSkcVO } from '@/api/erp/product/product'
 import { CommonStatusEnum } from '@/utils/constants'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 
-/** ERP 产品 表单 */
-defineOptions({ name: 'ProductForm' })
+/** ERP 产品skc 表单 */
+defineOptions({ name: 'ProductSkcForm' })
 
 const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗

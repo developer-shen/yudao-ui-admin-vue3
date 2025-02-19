@@ -113,6 +113,18 @@
         prop="salePrice"
         :formatter="erpPriceTableColumnFormatter"
       />
+      <el-table-column label="预估利润" align="center">
+        <template #default="scope">
+          <el-button
+              link
+              type="primary"
+              @click="openProfitForm(scope.row.id, scope.row.profitId)"
+              v-hasPermi="['erp:product:create']"
+            >
+            {{ scope.row.profitId ? scope.row.estimatedProfit : '---' }} 
+            </el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="状态" align="center" prop="status">
         <template #default="scope">
@@ -160,6 +172,8 @@
   <ProductForm ref="formRef" @success="getList" />
   <!-- skc变种表单弹窗：添加/修改 -->
   <ProductSkcForm ref="skcFormRef" @success="getList" />
+  <!-- 利润表单弹窗：添加/修改 -->
+  <ProductProfitForm ref="profitFormRef" @success="getList" />  
 </template>
 
 <script setup lang="ts">
@@ -169,6 +183,7 @@ import { ProductApi, ProductVO } from '@/api/erp/product/product'
 import { ProductCategoryApi, ProductCategoryVO } from '@/api/erp/product/category'
 import ProductForm from './ProductForm.vue'
 import ProductSkcForm from './ProductSkcForm.vue'
+import ProductProfitForm from './ProductProfitForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
 import { defaultProps, handleTree } from '@/utils/tree'
 import { erpPriceTableColumnFormatter } from '@/utils'
@@ -225,8 +240,20 @@ const openForm = (type: string, id?: number) => {
 
 /** SKC表单 添加/修改操作 */
 const skcFormRef = ref()
-const openSkcForm = (type: string, id?: number, productId?: number) => {
-  skcFormRef.value.open(type, id, productId)
+const openSkcForm = (type: string, skcId?: number, productId?: number) => {
+  skcFormRef.value.open(type, skcId, productId)
+}
+
+/** 利润表单 添加/修改操作 */
+const profitFormRef = ref()
+const openProfitForm = (id?: number, profitId?: number) => {
+  let type = ''
+  if(profitId){
+    type = 'update'
+  }else{
+    type = 'create'
+  }
+  profitFormRef.value.open(type, id, profitId)
 }
 
 /** 删除按钮操作 */

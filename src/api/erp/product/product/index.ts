@@ -16,6 +16,9 @@ export interface ProductVO {
   purchasePrice: number // 采购价格，单位：元
   salePrice: number // 销售价格，单位：元
   minPrice: number // 最低价格，单位：元
+  color: string // 颜色
+  profitId: number // 产品利润编号
+  estimatedProfit: number // 预估利润
 }
 
 // ERP 产品变种skc VO
@@ -35,6 +38,22 @@ export interface ProductSkcVO {
   salePrice: number // 销售价格，单位：元
   minPrice: number // 最低价格，单位：元
   color: string // 颜色
+}
+
+// ERP 产品利润 VO
+export interface ProductProfitVO {
+  id: number// 编号
+  productId: number// 产品编号
+  profit: number// 产品利润
+  purchasePrice: number// 采购价格
+  salePrice: number// 销售价格
+  firstLegPrice: number// 头程价格
+  lastMilePrice: number// 尾程价格
+  refundRate: number// 退货率
+  refundFreight: number// 退货运费
+  otherPrice: number// 其他费用
+  otherDetail: string// 其他费用详情
+  remark: string// 备注
 }
 
 // ERP 产品 API
@@ -74,7 +93,7 @@ export const ProductApi = {
     return await request.put({ url: `/erp/product/update`, data })
   },
 
-  // 修改产品
+  // 修改产品skc
    updateProductSkc: async (data: ProductSkcVO) => {
     return await request.put({ url: `/erp/product/updateSkc`, data })
    },
@@ -90,5 +109,17 @@ export const ProductApi = {
   // 导出产品 Excel
   exportProduct: async (params) => {
     return await request.download({ url: `/erp/product/export-excel`, params })
-  }
+  },
+  // 新增产品预估利润
+  createProductProfit: async (data: ProductProfitVO) => {
+    return await request.post({ url: `/erp/product/createProfit`, data })
+  },
+  // 修改产品预估利润
+  updateProductProfit: async (data: ProductProfitVO) => {
+    return await request.put({ url: `/erp/product/updateProfit`, data })
+   },
+  // 查询产品利润详情
+  getProductProfit: async (id: number) => {
+    return await request.get({ url: `/erp/product/getProfit?id=` + id })
+  },
 }

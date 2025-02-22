@@ -9,11 +9,6 @@
       :disabled="disabled"
     >
       <el-row :gutter="20">
-        <!-- <el-col :span="8">
-          <el-form-item label="订单单号" prop="no">
-            <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
-          </el-form-item>
-        </el-col> -->
         <el-col :span="8">
           <el-form-item label="订单时间" prop="orderTime">
             <el-date-picker

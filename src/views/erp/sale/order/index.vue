@@ -10,15 +10,6 @@
       :inline="true"
       label-width="68px"
     >
-      <!-- <el-form-item label="订单单号" prop="no">
-        <el-input
-          v-model="queryParams.no"
-          placeholder="请输入订单单号"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item> -->
       <el-form-item label="产品" prop="productId">
         <el-select
           v-model="queryParams.productId"
@@ -30,7 +21,7 @@
           <el-option
             v-for="item in productList"
             :key="item.id"
-            :label="item.barCode"
+            :label="item.barCode + ' - ' + item.name"
             :value="item.id"
           />
         </el-select>
@@ -118,7 +109,18 @@
     >
       <el-table-column width="80" label="选择" type="selection" />
       <el-table-column label="订单平台" align="center" prop="customerName" />
-      <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
+      <el-table-column label="产品信息" align="center" prop="productNames" min-width="200">
+        <template #default="scope">
+          <el-button
+            type="primary"
+            link
+            @click="openForm('detail', scope.row.id)"
+            v-hasPermi="['erp:purchase-order:query']"
+          >
+            {{ scope.row.productNames }}
+          </el-button>
+        </template>
+      </el-table-column>
       <el-table-column
         label="总数量"
         align="center"
@@ -145,13 +147,6 @@
       </el-table-column>
       <el-table-column label="操作" align="center" fixed="right" width="220">
         <template #default="scope">
-          <el-button
-            link
-            @click="openForm('detail', scope.row.id)"
-            v-hasPermi="['erp:sale-order:query']"
-          >
-            详情
-          </el-button>
           <el-button
             link
             type="primary"

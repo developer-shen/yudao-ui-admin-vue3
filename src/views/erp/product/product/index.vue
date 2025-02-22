@@ -29,6 +29,27 @@
           class="!w-240px"
         />
       </el-form-item>
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="queryParams.status" class="!w-240px" clearable placeholder="请选择状态">
+          <el-option
+            v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="创建时间" prop="createTime">
+        <el-date-picker
+          v-model="queryParams.createTime"
+          :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
+          class="!w-240px"
+          end-placeholder="结束日期"
+          start-placeholder="开始日期"
+          type="daterange"
+          value-format="YYYY-MM-DD HH:mm:ss"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
         <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
@@ -55,10 +76,10 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="spu货号" align="center" prop="barCode" />
-      <el-table-column label="产品名称" align="center" prop="name" min-width="200" />
-      <el-table-column label="附件" align="center" prop="fileUrl" width="110px">
+    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" border>
+      <el-table-column label="spu货号" align="center" prop="barCode" fixed/>
+      <el-table-column label="产品名称" align="center" prop="name" min-width="200" fixed/>
+      <el-table-column label="图片" align="center" prop="fileUrl" width="110px" fixed>
         <template #default="{ row }">
           <el-image
             v-if="row.fileUrl"
@@ -119,12 +140,24 @@
               link
               type="primary"
               @click="openProfitForm(scope.row.id, scope.row.profitId)"
-              v-hasPermi="['erp:product:create']"
+              v-hasPermi="['erp:product:update']"
             >
-            {{ scope.row.profitId ? scope.row.estimatedProfit : '---' }} 
+            {{ scope.row.profitId ? scope.row.estimatedProfit : '???'}} 
             </el-button>
         </template>
       </el-table-column>
+      <el-table-column label="规格" align="center">
+        <template #default="scope">
+          <el-button 
+            link
+            :type="scope.row.fullAttr ?  'success' : 'info'"
+            @click="openAttrForm(scope.row.id, scope.row.attributesId)"
+            v-hasPermi="['erp:product:update']"
+          >
+          <Icon :icon="scope.row.fullAttr ? 'fa-solid:clipboard-check' : 'fa-solid:clipboard-list'" />
+          </el-button>
+        </template>
+      </el-table-column>      
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="状态" align="center" prop="status">
         <template #default="scope">
@@ -174,6 +207,8 @@
   <ProductSkcForm ref="skcFormRef" @success="getList" />
   <!-- 利润表单弹窗：添加/修改 -->
   <ProductProfitForm ref="profitFormRef" @success="getList" />  
+  <!-- 属性表单弹窗：添加/修改 -->
+  <ProductAttributesForm ref="attrFormRef" @success="getList" />  
 </template>
 
 <script setup lang="ts">
@@ -184,7 +219,8 @@ import { ProductCategoryApi, ProductCategoryVO } from '@/api/erp/product/categor
 import ProductForm from './ProductForm.vue'
 import ProductSkcForm from './ProductSkcForm.vue'
 import ProductProfitForm from './ProductProfitForm.vue'
-import { DICT_TYPE } from '@/utils/dict'
+import ProductAttributesForm from './ProductAttributesFrom.vue'
+import { DICT_TYPE, getIntDictOptions} from '@/utils/dict'
 import { defaultProps, handleTree } from '@/utils/tree'
 import { erpPriceTableColumnFormatter } from '@/utils'
 
@@ -199,10 +235,11 @@ const list = ref<ProductVO[]>([]) // 列表的数据
 const total = ref(0) // 列表的总页数
 const queryParams = reactive({
   pageNo: 1,
-  pageSize: 10,
+  pageSize: 5,
   name: undefined,
   barCode: undefined,
-  categoryId: undefined
+  status: 0,
+  createTime: []
 })
 const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出的加载中
@@ -246,14 +283,26 @@ const openSkcForm = (type: string, skcId?: number, productId?: number) => {
 
 /** 利润表单 添加/修改操作 */
 const profitFormRef = ref()
-const openProfitForm = (id?: number, profitId?: number) => {
+const openProfitForm = (productId?: number, profitId?: number) => {
   let type = ''
   if(profitId){
     type = 'update'
   }else{
     type = 'create'
   }
-  profitFormRef.value.open(type, id, profitId)
+  profitFormRef.value.open(type, productId, profitId)
+}
+
+/** 属性表单 添加/修改操作 */
+const attrFormRef = ref()
+const openAttrForm = (productId?: number, attributesId?: number) => {
+  let type = ''
+  if(attributesId){
+    type = 'update'
+  }else{
+    type = 'create'
+  }
+  attrFormRef.value.open(type, productId, attributesId)
 }
 
 /** 删除按钮操作 */

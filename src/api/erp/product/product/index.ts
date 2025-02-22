@@ -56,6 +56,20 @@ export interface ProductProfitVO {
   remark: string// 备注
 }
 
+// ERP 产品变种属性 VO
+export interface ProductAttributesVO {
+  id: number// 编号
+  productId: number// 产品编号
+  weight: number// 重量
+  sizes: string// 尺码范围
+  stock: number// 库存
+  composition: string// 成分
+  productMeasurements: string// 尺码表
+  bodyMeasurements: string// 基码表
+  careInstructions: string// 洗涤说明
+  remark: string// 备注
+}
+
 // ERP 产品 API
 export const ProductApi = {
   // 查询产品分页
@@ -121,5 +135,17 @@ export const ProductApi = {
   // 查询产品利润详情
   getProductProfit: async (id: number) => {
     return await request.get({ url: `/erp/product/getProfit?id=` + id })
+  },
+  // 新增产品属性详情
+  createProductAttr: async (data: ProductAttributesVO) => {
+    return await request.post({ url: `/erp/product/createAttr`, data })
+  },
+  // 修改产品属性详情
+  updateProductAttr: async (data: ProductAttributesVO) => {
+    return await request.put({ url: `/erp/product/updateAttr`, data })
+   },
+  // 查询产品属性详情
+  getProductAttr: async (id: number) => {
+    return await request.get({ url: `/erp/product/getAttr?id=` + id })
   },
 }

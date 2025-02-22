@@ -149,7 +149,7 @@ const open = async (type: string, productId?: number, id?: number) => {
   resetForm()
 
   // 新增时，给表单设置初始值
-  if (productId) {
+  if (formType.value === 'create' && productId) {
     try {
       formData.value.productId = productId
       const product = await ProductApi.getProduct(productId)
@@ -160,7 +160,7 @@ const open = async (type: string, productId?: number, id?: number) => {
   }
 
   // 修改时，设置数据
-  if (id !== undefined && id !== null && id !== 0) {
+  if (formType.value === 'update' && id !== undefined && id !== null && id !== 0) {
     profitId.value = id
     formLoading.value = true
     showProfit.value = true

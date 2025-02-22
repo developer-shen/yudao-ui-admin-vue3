@@ -17,6 +17,7 @@
         <el-col :span="12">
           <el-form-item label="颜色" prop="color">
             <el-color-picker v-model="formData.color" />
+            <el-button link type="primary" @click="activateEyeDropper" style="margin-left: 5px;"> <Icon icon="fa:eyedropper" /></el-button>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -43,7 +44,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="附件" prop="fileUrl">
+          <el-form-item label="图片" prop="fileUrl">
             <UploadImg v-model="formData.fileUrl" />
           </el-form-item>
         </el-col>
@@ -161,6 +162,22 @@ const deleteSkc = async () => {
   } finally {
   }
 }
+
+/** 启动颜色吸管 */
+const activateEyeDropper = async () => {
+  // 检查浏览器是否支持 EyeDropper API
+  if ('EyeDropper' in window) {
+    try {
+      const eyeDropper = new EyeDropper();
+      const result = await eyeDropper.open();  // 打开吸管
+      formData.value.color = result.sRGBHex;  // 获取并填充颜色值
+    } catch (error) {
+      console.error('颜色吸管选择失败:', error);
+    }
+  } else {
+    alert('您的浏览器不支持颜色吸管功能，请升级浏览器。');
+  }
+};
 
 /** 重置表单 */
 const resetForm = () => {

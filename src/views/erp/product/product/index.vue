@@ -146,15 +146,15 @@
             </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="规格" align="center">
+      <el-table-column label="尺码表" align="center">
         <template #default="scope">
           <el-button 
             link
-            :type="scope.row.fullAttr ?  'success' : 'info'"
-            @click="openAttrForm(scope.row.id, scope.row.attributesId)"
+            type="primary"
+            @click="openSizeView(scope.row.barCode)"
             v-hasPermi="['erp:product:update']"
           >
-          <Icon :icon="scope.row.fullAttr ? 'fa-solid:clipboard-check' : 'fa-solid:clipboard-list'" />
+          <Icon icon='ep:document' />
           </el-button>
         </template>
       </el-table-column>      
@@ -206,9 +206,12 @@
   <!-- skc变种表单弹窗：添加/修改 -->
   <ProductSkcForm ref="skcFormRef" @success="getList" />
   <!-- 利润表单弹窗：添加/修改 -->
-  <ProductProfitForm ref="profitFormRef" @success="getList" />  
+  <ProductProfitForm ref="profitFormRef" @success="getList" /> 
+  <!-- 商品尺码表 -->
+  <ProductSizeView ref="sizeRef"/>   
   <!-- 属性表单弹窗：添加/修改 -->
-  <ProductAttributesForm ref="attrFormRef" @success="getList" />  
+  <!-- <ProductAttributesForm ref="attrFormRef" @success="getList" />   -->
+
 </template>
 
 <script setup lang="ts">
@@ -219,9 +222,10 @@ import { ProductCategoryApi, ProductCategoryVO } from '@/api/erp/product/categor
 import ProductForm from './ProductForm.vue'
 import ProductSkcForm from './ProductSkcForm.vue'
 import ProductProfitForm from './ProductProfitForm.vue'
-import ProductAttributesForm from './ProductAttributesFrom.vue'
+import ProductSizeView from './ProductSizeView.vue'
+// import ProductAttributesForm from './ProductAttributesFrom.vue'
 import { DICT_TYPE, getIntDictOptions} from '@/utils/dict'
-import { defaultProps, handleTree } from '@/utils/tree'
+import { handleTree } from '@/utils/tree'
 import { erpPriceTableColumnFormatter } from '@/utils'
 
 /** ERP 产品列表 */
@@ -303,6 +307,12 @@ const openAttrForm = (productId?: number, attributesId?: number) => {
     type = 'create'
   }
   attrFormRef.value.open(type, productId, attributesId)
+}
+
+/** 打开尺码表 */
+const sizeRef = ref()
+const openSizeView= (barCode: string) => {
+  sizeRef.value.open(barCode)
 }
 
 /** 删除按钮操作 */

@@ -14,9 +14,15 @@
             <el-input-number v-model="formData.weight" :precision="2" :step="1" :min="0" />
           </el-form-item>
         </el-col>
+        
         <el-col :span="12">
           <el-form-item label="尺码范围" prop="sizes">
             <el-input v-model="formData.sizes" placeholder="尺码范围" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="尺码表" prop="productMeasurements">
+            <el-button @click="openSizeView" type="primary">查 看</el-button>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -27,16 +33,6 @@
         <el-col :span="12">
           <el-form-item label="洗涤说明" prop="careInstructions">
             <el-input v-model="formData.careInstructions" placeholder="洗涤说明" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="尺码表" prop="productMeasurements">
-            <UploadImg v-model="formData.productMeasurements" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="基码表" prop="bodyMeasurements">
-            <UploadImg v-model="formData.bodyMeasurements" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -51,10 +47,13 @@
       <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
+
+  <!-- 商品尺码表 -->
+  <ProductSizeView ref="sizeRef"/>  
 </template>
 <script setup lang="ts">
 import { ProductApi, ProductAttributesVO } from '@/api/erp/product/product'
-
+import ProductSizeView from './ProductSizeView.vue'
 /** ERP 产品属性 表单 */
 defineOptions({ name: 'ProductAttrForm' })
 
@@ -142,6 +141,12 @@ const deleteAttr = async () => {
     emit('success')
   } finally {
   }
+}
+
+/** 打开尺码表 */
+const sizeRef = ref()
+const openSizeView= () => {
+  sizeRef.value.open()
 }
 
 /** 重置表单 */

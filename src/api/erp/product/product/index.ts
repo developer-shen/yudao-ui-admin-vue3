@@ -51,6 +51,7 @@ export interface ProductProfitVO {
   lastMilePrice: number// 尾程价格
   refundRate: number// 退货率
   refundFreight: number// 退货运费
+  adPrice: number// 广告费用
   otherPrice: number// 其他费用
   otherDetail: string// 其他费用详情
   remark: string// 备注

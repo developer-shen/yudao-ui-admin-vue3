@@ -6,6 +6,7 @@
       :rules="formRules"
       label-width="100px"
       v-loading="formLoading"
+      :disabled="disabled"
     >
     <el-form-item label="财务人员" prop="financeUserId">
         <el-select
@@ -82,12 +83,12 @@ const formRules = reactive({
   paymentPrice: [{ required: true, message: '实付金额不能为空', trigger: 'blur' }],
   paymentWay: [{ required: true, message: '付款方式不能为空', trigger: 'blur' }]
 })
+const disabled = computed(() => formType.value === 'detail')
 const formRef = ref() // 表单 Ref
 const userList = ref<UserApi.UserVO[]>([]) // 用户列表
 
 /** 打开弹窗 */
 const open = async (type: string, id?: number) => {
-  dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
   resetForm()
@@ -96,6 +97,9 @@ const open = async (type: string, id?: number) => {
     formLoading.value = true
     try {
       formData.value = await FinancePaymentListApi.getFinancePaymentList(id)
+      dialogVisible.value = true
+    } catch (error) {
+      dialogVisible.value = false
     } finally {
       formLoading.value = false
     }

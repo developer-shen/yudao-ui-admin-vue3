@@ -175,19 +175,13 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
+    <el-table v-loading="loading" :data="list" :stripe="true">
       <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="财务人员" align="center" prop="financeUserName" />
-      <el-table-column
-        label="付款时间"
-        align="center"
-        prop="paymentTime"
-        :formatter="dateFormatter"
-        width="180px"
-      />
       <el-table-column label="实付金额" align="center" prop="paymentPrice" />
       <el-table-column label="付款方式" align="center" prop="paymentWay" />
       <el-table-column label="付款用途" align="center" prop="paymentPurpose" />
+      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="附件" align="center" prop="fileUrl" width="110px">
         <template #default="{ row }">
           <el-image
@@ -201,7 +195,13 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column
+        label="付款时间"
+        align="center"
+        prop="paymentTime"
+        :formatter="dateFormatter"
+        width="180px"
+      />
       <el-table-column
         label="创建时间"
         align="center"

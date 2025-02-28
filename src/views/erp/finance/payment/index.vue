@@ -1,161 +1,130 @@
 <template>
-  <doc-alert
-    title="【财务】采购付款、销售收款"
-    url="https://doc.iocoder.cn/sale/finance-payment-receipt/"
-  />
-
   <ContentWrap>
-    <!-- 搜索工作栏 -->
-    <el-form
-      class="-mb-15px"
-      :model="queryParams"
-      ref="queryFormRef"
-      :inline="true"
-      label-width="68px"
-    >
-      <el-form-item label="付款单号" prop="no">
-        <el-input
-          v-model="queryParams.no"
-          placeholder="请输入付款单号"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="付款时间" prop="paymentTime">
-        <el-date-picker
-          v-model="queryParams.paymentTime"
-          value-format="YYYY-MM-DD HH:mm:ss"
-          type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="供应商" prop="supplierId">
-        <el-select
-          v-model="queryParams.supplierId"
-          clearable
-          filterable
-          placeholder="请选择供应商"
-          class="!w-240px"
+    <el-row :gutter="24">
+      <!-- 搜索工作栏 -->
+      <el-col :span="12">
+        <el-form
+          class="-mb-15px"
+          :model="queryParams"
+          ref="queryFormRef"
+          :inline="true"
+          label-width="68px"
         >
-          <el-option
-            v-for="item in supplierList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="创建人" prop="creator">
-        <el-select
-          v-model="queryParams.creator"
-          clearable
-          filterable
-          placeholder="请选择创建人"
-          class="!w-240px"
-        >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.nickname"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="财务人员" prop="financeUserId">
-        <el-select
-          v-model="queryParams.financeUserId"
-          clearable
-          filterable
-          placeholder="请选择财务人员"
-          class="!w-240px"
-        >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.nickname"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="付款账户" prop="accountId">
-        <el-select
-          v-model="queryParams.accountId"
-          clearable
-          filterable
-          placeholder="请选择付款账户"
-          class="!w-240px"
-        >
-          <el-option
-            v-for="item in accountList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
-          <el-option
-            v-for="dict in getIntDictOptions(DICT_TYPE.ERP_AUDIT_STATUS)"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input
-          v-model="queryParams.remark"
-          placeholder="请输入备注"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="采购单号" prop="bizNo">
-        <el-input
-          v-model="queryParams.bizNo"
-          placeholder="请输入采购单号"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
-        <el-button
-          type="primary"
-          plain
-          @click="openForm('create')"
-          v-hasPermi="['erp:finance-payment:create']"
-        >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
-        </el-button>
-        <el-button
-          type="success"
-          plain
-          @click="handleExport"
-          :loading="exportLoading"
-          v-hasPermi="['erp:finance-payment:export']"
-        >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
-        </el-button>
-        <el-button
-          type="danger"
-          plain
-          @click="handleDelete(selectionList.map((item) => item.id))"
-          v-hasPermi="['erp:finance-payment:delete']"
-          :disabled="selectionList.length === 0"
-        >
-          <Icon icon="ep:delete" class="mr-5px" /> 删除
-        </el-button>
-      </el-form-item>
-    </el-form>
+          <el-form-item label="供应商" prop="supplierId">
+            <el-select
+              v-model="queryParams.supplierId"
+              clearable
+              filterable
+              placeholder="请选择供应商"
+              class="!w-240px"
+            >
+              <el-option
+                v-for="item in supplierList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="付款账户" prop="accountId">
+            <el-select
+              v-model="queryParams.accountId"
+              clearable
+              filterable
+              placeholder="请选择付款账户"
+              class="!w-240px"
+            >
+              <el-option
+                v-for="item in accountList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="付款时间" prop="paymentTime">
+            <el-date-picker
+              v-model="queryParams.paymentTime"
+              value-format="YYYY-MM-DD HH:mm:ss"
+              type="daterange"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
+              class="!w-240px"
+            />
+          </el-form-item>
+          <el-form-item label="备注" prop="remark">
+            <el-input
+              v-model="queryParams.remark"
+              placeholder="请输入备注"
+              clearable
+              @keyup.enter="handleQuery"
+              class="!w-240px"
+            />
+          </el-form-item>
+
+          <el-form-item>
+            <el-button @click="handleQuery"
+              ><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button
+            >
+            <el-button @click="resetQuery"
+              ><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button
+            >
+            <el-button
+              type="primary"
+              plain
+              @click="openForm('create')"
+              v-hasPermi="['erp:finance-payment:create']"
+            >
+              <Icon icon="ep:plus" class="mr-5px" /> 新增
+            </el-button>
+            <el-button
+              type="success"
+              plain
+              @click="handleExport"
+              :loading="exportLoading"
+              v-hasPermi="['erp:finance-payment:export']"
+            >
+              <Icon icon="ep:download" class="mr-5px" /> 导出
+            </el-button>
+            <el-button
+              type="danger"
+              plain
+              @click="handleDelete(selectionList.map((item) => item.id))"
+              v-hasPermi="['erp:finance-payment:delete']"
+              :disabled="selectionList.length === 0"
+            >
+              <Icon icon="ep:delete" class="mr-5px" /> 删除
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </el-col>
+
+      <!-- 统计 -->
+      <el-col :span="12">
+        <el-card shadow="hover" class="mb-8px">
+          <el-row :gutter="24">
+            <el-col :span="24">
+              <el-progress
+                :text-inside="true"
+                :stroke-width="40"
+                :percentage="statistic.percentage"
+                status="warning"
+              />
+            </el-col>
+            <el-col :span="10">
+              <el-statistic title="已结算金额" :value="statistic.amountPaid" />
+            </el-col>
+            <el-col :span="10">
+              <el-statistic title="待结算金额" :value="statistic.unpaidAmount" />
+            </el-col>
+            <el-col :span="4">
+              <el-statistic title="采购总金额" :value="statistic.totalPayment" />
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-col>
+    </el-row>
   </ContentWrap>
 
   <!-- 列表 -->
@@ -165,11 +134,19 @@
       :data="list"
       :stripe="true"
       :show-overflow-tooltip="true"
+      show-summary
+      :summary-method="footerMethod"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column width="30" label="选择" type="selection" />
-      <el-table-column min-width="180" label="付款单号" align="center" prop="no" />
+      <el-table-column width="80" label="选择" type="selection" />
       <el-table-column label="供应商" align="center" prop="supplierName" />
+      <el-table-column label="付款账户" align="center" prop="accountName" />
+      <el-table-column
+        label="实付金额/￥"
+        align="center"
+        prop="paymentPrice"
+        :formatter="erpPriceTableColumnFormatter"
+      />
       <el-table-column
         label="付款时间"
         align="center"
@@ -177,40 +154,17 @@
         :formatter="dateFormatter2"
         width="120px"
       />
-      <el-table-column label="创建人" align="center" prop="creatorName" />
-      <el-table-column label="财务人员" align="center" prop="financeUserName" />
-      <el-table-column label="付款账户" align="center" prop="accountName" />
-      <el-table-column
-        label="合计付款"
-        align="center"
-        prop="totalPrice"
-        :formatter="erpPriceTableColumnFormatter"
-      />
-      <el-table-column
-        label="优惠金额"
-        align="center"
-        prop="discountPrice"
-        :formatter="erpPriceTableColumnFormatter"
-      />
-      <el-table-column
-        label="实际付款"
-        align="center"
-        prop="paymentPrice"
-        :formatter="erpPriceTableColumnFormatter"
-      />
-      <el-table-column label="状态" align="center" fixed="right" width="90" prop="status">
-        <template #default="scope">
-          <dict-tag :type="DICT_TYPE.ERP_AUDIT_STATUS" :value="scope.row.status" />
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" fixed="right" width="220">
+      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="操作" align="center" fixed="right" width="250">
         <template #default="scope">
           <el-button
+            type="warning"
             link
-            @click="openForm('detail', scope.row.id)"
-            v-hasPermi="['erp:finance-payment:query']"
+            @click="openPlForm(scope.row.paymentListId)"
+            v-hasPermi="['erp:finance-payment-list:query']"
           >
-            详情
+            <Icon icon="fa-solid:search-dollar" />
+            付款详情
           </el-button>
           <el-button
             link
@@ -261,12 +215,16 @@
 
   <!-- 表单弹窗：添加/修改 -->
   <FinancePaymentForm ref="formRef" @success="getList" />
+
+  <!-- 付款清单表单详情弹窗 -->
+  <FinancePaymentListForm ref="plFormRef" @success="getList" />
 </template>
 
 <script setup lang="ts">
 import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
 import { dateFormatter2 } from '@/utils/formatTime'
 import download from '@/utils/download'
+import { useTransition } from '@vueuse/core'
 import { FinancePaymentApi, FinancePaymentVO } from '@/api/erp/finance/payment'
 import FinancePaymentForm from './FinancePaymentForm.vue'
 import { UserVO } from '@/api/system/user'
@@ -274,6 +232,7 @@ import * as UserApi from '@/api/system/user'
 import { erpPriceTableColumnFormatter } from '@/utils'
 import { SupplierApi, SupplierVO } from '@/api/erp/purchase/supplier'
 import { AccountApi, AccountVO } from '@/api/erp/finance/account'
+import FinancePaymentListForm from '@/views/erp/financepaymentlist/FinancePaymentListForm.vue'
 
 /** ERP 付款单列表 */
 defineOptions({ name: 'ErpPurchaseOrder' })
@@ -302,6 +261,12 @@ const exportLoading = ref(false) // 导出的加载中
 const supplierList = ref<SupplierVO[]>([]) // 供应商列表
 const userList = ref<UserVO[]>([]) // 用户列表
 const accountList = ref<AccountVO[]>([]) // 账户列表
+const statistic = ref({
+  totalPayment: 0,// 采购总金额
+  amountPaid: 0,// 已结算金额
+  unpaidAmount: 0,// 待结算金额
+  percentage: 0,// 结算百分比
+})//统计数据
 
 /** 查询列表 */
 const getList = async () => {
@@ -310,6 +275,12 @@ const getList = async () => {
     const data = await FinancePaymentApi.getFinancePaymentPage(queryParams)
     list.value = data.list
     total.value = data.total
+
+    const statisticData = await FinancePaymentApi.getStatistic(queryParams)
+    statistic.value.totalPayment = statisticData.totalPayment
+    statistic.value.amountPaid = statisticData.amountPaid
+    statistic.value.unpaidAmount = statisticData.unpaidAmount
+    statistic.value.percentage = statisticData.percentage
   } finally {
     loading.value = false
   }
@@ -331,6 +302,12 @@ const resetQuery = () => {
 const formRef = ref()
 const openForm = (type: string, id?: number) => {
   formRef.value.open(type, id)
+}
+
+/** 打开付款清单详情 */
+const plFormRef = ref()
+const openPlForm = (plId?: number) => {
+  plFormRef.value.open('detail', plId)
 }
 
 /** 删除按钮操作 */
@@ -379,6 +356,34 @@ const handleExport = async () => {
 const selectionList = ref<FinancePaymentVO[]>([])
 const handleSelectionChange = (rows: FinancePaymentVO[]) => {
   selectionList.value = rows
+}
+
+/** 合计行 */
+const footerMethod = (params: { columns: any; data: any }) => {
+  const { columns, data } = params
+  const sums: (string | number)[] = []
+
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      // 第一列显示 "合计"
+      sums[index] = '合计'
+      return
+    }
+
+    // 只计算数值列
+    const key = column.property
+    if (['paymentPrice'].includes(key)) {
+      const total = data.reduce((sum: number, row: any) => {
+        const value = parseFloat(row[key])
+        return sum + (isNaN(value) ? 0 : value)
+      }, 0)
+      sums[index] = total.toFixed(2) // 保留两位小数
+    } else {
+      sums[index] = '' // 其他列不显示合计
+    }
+  })
+
+  return sums
 }
 
 /** 初始化 **/

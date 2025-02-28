@@ -3,10 +3,11 @@ import request from '@/config/axios'
 // ERP 付款单 VO
 export interface FinancePaymentVO {
   id: number // 付款单编号
+  paymentListId: number
   no: string // 付款单号
   supplierId: number // 供应商编号
   paymentTime: Date // 付款时间
-  totalPrice: number // 合计金额，单位：元
+  paymentPrice: number // 合计金额，单位：元
   status: number // 状态
   remark: string // 备注
 }
@@ -57,5 +58,11 @@ export const FinancePaymentApi = {
   // 导出付款单 Excel
   exportFinancePayment: async (params: any) => {
     return await request.download({ url: `/erp/finance-payment/export-excel`, params })
-  }
+  },
+  
+  // 查询付款单统计
+  getStatistic: async (params: any) => {
+    return await request.get({ url: `/erp/finance-payment/getStatistic`, params })
+  },
+    
 }

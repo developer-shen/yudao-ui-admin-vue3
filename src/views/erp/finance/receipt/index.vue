@@ -1,9 +1,4 @@
 <template>
-  <doc-alert
-    title="【财务】采购付款、销售收款"
-    url="https://doc.iocoder.cn/sale/finance-payment-receipt/"
-  />
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -13,74 +8,22 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="收款单号" prop="no">
-        <el-input
-          v-model="queryParams.no"
-          placeholder="请输入收款单号"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="收款时间" prop="receiptTime">
-        <el-date-picker
-          v-model="queryParams.receiptTime"
-          value-format="YYYY-MM-DD HH:mm:ss"
-          type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="供应商" prop="supplierId">
-        <el-select
-          v-model="queryParams.supplierId"
-          clearable
-          filterable
-          placeholder="请选择供应商"
-          class="!w-240px"
-        >
-          <el-option
-            v-for="item in supplierList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="创建人" prop="creator">
-        <el-select
-          v-model="queryParams.creator"
-          clearable
-          filterable
-          placeholder="请选择创建人"
-          class="!w-240px"
-        >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.nickname"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="财务人员" prop="financeUserId">
-        <el-select
-          v-model="queryParams.financeUserId"
-          clearable
-          filterable
-          placeholder="请选择财务人员"
-          class="!w-240px"
-        >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.nickname"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
+      <!-- <el-form-item label="收款平台" prop="customerId">
+            <el-select
+              v-model="formData.customerId"
+              clearable
+              filterable
+              placeholder="请选择收款平台"
+              class="!w-1/1"
+            >
+              <el-option
+                v-for="item in customerList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item> -->
       <el-form-item label="收款账户" prop="accountId">
         <el-select
           v-model="queryParams.accountId"
@@ -97,16 +40,6 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
-          <el-option
-            v-for="dict in getIntDictOptions(DICT_TYPE.ERP_AUDIT_STATUS)"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input
           v-model="queryParams.remark"
@@ -116,12 +49,14 @@
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="采购单号" prop="bizNo">
-        <el-input
-          v-model="queryParams.bizNo"
-          placeholder="请输入采购单号"
-          clearable
-          @keyup.enter="handleQuery"
+      <el-form-item label="收款时间" prop="receiptTime">
+        <el-date-picker
+          v-model="queryParams.receiptTime"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          type="daterange"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
@@ -165,53 +100,42 @@
       :data="list"
       :stripe="true"
       :show-overflow-tooltip="true"
+       show-summary
+      :summary-method="footerMethod"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column width="30" label="选择" type="selection" />
-      <el-table-column min-width="180" label="收款单号" align="center" prop="no" />
-      <el-table-column label="供应商" align="center" prop="supplierName" />
+      <el-table-column width="80" label="选择" type="selection" />
+      <el-table-column label="收款平台" align="center" prop="customerName" />
+      <el-table-column label="收款账户" align="center" prop="accountName" />
       <el-table-column
+        label="合计收款/￥"
+        align="center"
+        prop="totalPrice"
+        :formatter="erpPriceTableColumnFormatter"
+      />
+      <el-table-column
+        label="实际到账/￥"
+        align="center"
+        prop="receiptPrice"
+        :formatter="erpPriceTableColumnFormatter"
+      />
+       <el-table-column
         label="收款时间"
         align="center"
         prop="receiptTime"
         :formatter="dateFormatter2"
         width="120px"
       />
-      <el-table-column label="创建人" align="center" prop="creatorName" />
-      <el-table-column label="财务人员" align="center" prop="financeUserName" />
-      <el-table-column label="收款账户" align="center" prop="accountName" />
-      <el-table-column
-        label="合计收款"
+       <el-table-column
+        label="到账时间"
         align="center"
-        prop="totalPrice"
-        :formatter="erpPriceTableColumnFormatter"
+        prop="receivedTime"
+        :formatter="dateFormatter2"
+        width="120px"
       />
-      <el-table-column
-        label="优惠金额"
-        align="center"
-        prop="discountPrice"
-        :formatter="erpPriceTableColumnFormatter"
-      />
-      <el-table-column
-        label="实际收款"
-        align="center"
-        prop="receiptPrice"
-        :formatter="erpPriceTableColumnFormatter"
-      />
-      <el-table-column label="状态" align="center" fixed="right" width="90" prop="status">
-        <template #default="scope">
-          <dict-tag :type="DICT_TYPE.ERP_AUDIT_STATUS" :value="scope.row.status" />
-        </template>
-      </el-table-column>
+      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" fixed="right" width="220">
         <template #default="scope">
-          <el-button
-            link
-            @click="openForm('detail', scope.row.id)"
-            v-hasPermi="['erp:finance-receipt:query']"
-          >
-            详情
-          </el-button>
           <el-button
             link
             type="primary"
@@ -379,6 +303,34 @@ const handleExport = async () => {
 const selectionList = ref<FinanceReceiptVO[]>([])
 const handleSelectionChange = (rows: FinanceReceiptVO[]) => {
   selectionList.value = rows
+}
+
+/** 合计行 */
+const footerMethod = (params: { columns: any; data: any }) => {
+  const { columns, data } = params
+  const sums: (string | number)[] = []
+
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      // 第一列显示 "合计"
+      sums[index] = '合计'
+      return
+    }
+
+    // 只计算数值列
+    const key = column.property
+    if (['totalPrice', 'receiptPrice'].includes(key)) {
+      const total = data.reduce((sum: number, row: any) => {
+        const value = parseFloat(row[key])
+        return sum + (isNaN(value) ? 0 : value)
+      }, 0)
+      sums[index] = total.toFixed(2) // 保留两位小数
+    } else {
+      sums[index] = '' // 其他列不显示合计
+    }
+  })
+
+  return sums
 }
 
 /** 初始化 **/

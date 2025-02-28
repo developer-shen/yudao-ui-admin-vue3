@@ -20,7 +20,7 @@
             formData.firstLegPrice
           }}+{{ formData.lastMilePrice }}) - {{ formData.refundRate }}*({{
             formData.purchasePrice
-          }}+{{ formData.salePrice }}+{{ formData.refundFreight }}) - {{ formData.adPrice }}- {{ formData.otherPrice }}
+          }}+{{ formData.salePrice }}+{{ formData.refundFreight }}) - {{ formData.adPrice }} - {{ formData.otherPrice }}
         </span>
         <br />
         <span> = {{ formData.profit }} </span>
@@ -237,7 +237,7 @@ const open = async (type: string, productId?: number, id?: number) => {
       formData.value.salePrice = product.salePrice // 销售价格
 
       // 初始值, 需要根据实际情况调整
-      formData.value.firstLegPrice = (usdcny.value * 3.5).toFixed(1) // 头程价格 $3.5
+      formData.value.firstLegPrice = 3.5 // 头程价格 $3.5
       formData.value.lastMilePrice = (usdcny.value * 1.3).toFixed(1) // 尾程价格 $1.3提单费
       formData.value.refundRate = 0.1 // 退货率 10%
       formData.value.refundFreight = (usdcny.value * 6).toFixed(1) // 退货运费 $6

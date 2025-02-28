@@ -1,5 +1,5 @@
 <template>
-  <Dialog :title="dialogTitle" v-model="dialogVisible" width="1080">
+  <Dialog :title="dialogTitle" v-model="dialogVisible" width="800">
     <el-form
       ref="formRef"
       :model="formData"
@@ -8,30 +8,19 @@
       v-loading="formLoading"
       :disabled="disabled"
     >
-      <el-row :gutter="20">
-        <el-col :span="8">
+      <el-row :gutter="24">
+        <!-- <el-col :span="8">
           <el-form-item label="收款单号" prop="no">
             <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
           </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="收款时间" prop="receiptTime">
-            <el-date-picker
-              v-model="formData.receiptTime"
-              type="date"
-              value-format="x"
-              placeholder="选择收款时间"
-              class="!w-1/1"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="平台" prop="customerId">
+        </el-col> -->
+        <el-col :span="12">
+          <el-form-item label="收款平台" prop="customerId">
             <el-select
               v-model="formData.customerId"
               clearable
               filterable
-              placeholder="请选择平台"
+              placeholder="请选择收款平台"
               class="!w-1/1"
             >
               <el-option
@@ -43,48 +32,13 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
-          <el-form-item label="财务人员" prop="financeUserId">
-            <el-select
-              v-model="formData.financeUserId"
-              clearable
-              filterable
-              placeholder="请选择财务人员"
-              class="!w-1/1"
-            >
-              <el-option
-                v-for="item in userList"
-                :key="item.id"
-                :label="item.nickname"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="16">
-          <el-form-item label="备注" prop="remark">
-            <el-input
-              type="textarea"
-              v-model="formData.remark"
-              :rows="1"
-              placeholder="请输入备注"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="附件" prop="fileUrl">
-            <UploadFile :is-show-tip="false" v-model="formData.fileUrl" :limit="1" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="收款账户" prop="accountId">
             <el-select
               v-model="formData.accountId"
               clearable
               filterable
-              placeholder="请选择结算账户"
+              placeholder="请选择收款账户"
               class="!w-1/1"
             >
               <el-option
@@ -96,20 +50,76 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        
+        <el-col :span="12">
           <el-form-item label="合计收款" prop="totalPrice">
-            <el-input disabled v-model="formData.totalPrice" :formatter="erpPriceInputFormatter" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="实际收款">
+            <el-input-number v-model="formData.totalPrice" :precision="2" :step="1" :min="0">
+              <template #prefix>
+                <span>￥</span>
+              </template>
+            </el-input-number>
             <el-input
+              v-model="formData.totalPrice"
+              :formatter="(value) => `$${(value / usdcny).toFixed(2)}`"
+              style="width: 100px"
               disabled
-              v-model="formData.receiptPrice"
-              :formatter="erpPriceInputFormatter"
             />
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="收款时间" prop="receiptTime">
+            <el-date-picker
+              v-model="formData.receiptTime"
+              type="date"
+              value-format="x"
+              placeholder="选择收款时间"
+              class="!w-1/1"
+            />
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="12">
+          <el-form-item label="实际到账">
+            <el-input-number v-model="formData.receiptPrice" :precision="2" :step="1" :min="0">
+              <template #prefix>
+                <span>￥</span>
+              </template>
+            </el-input-number>
+            <el-input
+              v-model="formData.receiptPrice"
+              :formatter="(value) => `$${(value / usdcny).toFixed(2)}`"
+              style="width: 100px"
+              disabled
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="到账时间" prop="receivedTime">
+            <el-date-picker
+              v-model="formData.receivedTime"
+              type="date"
+              value-format="x"
+              placeholder="选择收款时间"
+              class="!w-1/1"
+            />
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="24">
+          <el-form-item label="备注" prop="remark">
+            <el-input
+              type="textarea"
+              v-model="formData.remark"
+              :rows="1"
+              placeholder="请输入备注"
+            />
+          </el-form-item>
+        </el-col>
+        <!-- <el-col :span="8">
+          <el-form-item label="附件" prop="fileUrl">
+            <UploadFile :is-show-tip="false" v-model="formData.fileUrl" :limit="1" />
+          </el-form-item>
+        </el-col> -->
       </el-row>
     </el-form>
     <template #footer>
@@ -144,6 +154,7 @@ const formData = ref({
   accountId: undefined,
   financeUserId: undefined,
   receiptTime: undefined,
+  receivedTime: undefined,
   remark: undefined,
   fileUrl: '',
   totalPrice: 0,
@@ -153,8 +164,10 @@ const formData = ref({
   no: undefined // 订单单号，后端返回
 })
 const formRules = reactive({
-  customerId: [{ required: true, message: '平台不能为空', trigger: 'blur' }],
-  receiptTime: [{ required: true, message: '订单时间不能为空', trigger: 'blur' }]
+  customerId: [{ required: true, message: '收款平台不能为空', trigger: 'blur' }],
+  accountId: [{ required: true, message: '收款账户不能为空', trigger: 'blur' }],
+  totalPrice: [{ required: true, message: '合计收款不能为空', trigger: 'blur' }],
+  receiptTime: [{ required: true, message: '收款时间不能为空', trigger: 'blur' }],
 })
 const disabled = computed(() => formType.value === 'detail')
 const formRef = ref() // 表单 Ref
@@ -165,20 +178,21 @@ const userList = ref<UserApi.UserVO[]>([]) // 用户列表
 /** 子表的表单 */
 const subTabsName = ref('item')
 const itemFormRef = ref()
+const usdcny = ref(7.26) // 美元人民币汇率
 
 /** 计算 discountPrice、totalPrice 价格 */
-watch(
-  () => formData.value,
-  (val) => {
-    if (!val) {
-      return
-    }
-    const totalPrice = val.items.reduce((prev, curr) => prev + curr.receiptPrice, 0)
-    formData.value.totalPrice = totalPrice
-    formData.value.receiptPrice = totalPrice - val.discountPrice
-  },
-  { deep: true }
-)
+// watch(
+//   () => formData.value,
+//   (val) => {
+//     if (!val) {
+//       return
+//     }
+//     const totalPrice = val.items.reduce((prev, curr) => prev + curr.receiptPrice, 0)
+//     formData.value.totalPrice = totalPrice
+//     formData.value.receiptPrice = totalPrice - val.discountPrice
+//   },
+//   { deep: true }
+// )
 
 /** 打开弹窗 */
 const open = async (type: string, id?: number) => {
@@ -198,7 +212,7 @@ const open = async (type: string, id?: number) => {
   // 加载平台列表
   customerList.value = await CustomerApi.getCustomerSimpleList()
   // 加载用户列表
-  userList.value = await UserApi.getSimpleUserList()
+  //userList.value = await UserApi.getSimpleUserList()
   // 加载账户列表
   accountList.value = await AccountApi.getAccountSimpleList()
   const defaultAccount = accountList.value.find((item) => item.defaultStatus)
@@ -213,12 +227,14 @@ const emit = defineEmits(['success']) // 定义 success 事件，用于操作成
 const submitForm = async () => {
   // 校验表单
   await formRef.value.validate()
-  await itemFormRef.value.validate()
   // 提交请求
   formLoading.value = true
+  console.log(111);
+  
   try {
     const data = formData.value as unknown as FinanceReceiptVO
     if (formType.value === 'create') {
+        console.log(222);
       await FinanceReceiptApi.createFinanceReceipt(data)
       message.success(t('common.createSuccess'))
     } else {
@@ -241,6 +257,7 @@ const resetForm = () => {
     accountId: undefined,
     financeUserId: undefined,
     receiptTime: undefined,
+    receivedTime: undefined,
     remark: undefined,
     fileUrl: undefined,
     totalPrice: 0,

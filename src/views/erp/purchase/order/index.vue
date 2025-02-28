@@ -108,6 +108,7 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column width="80" label="选择" type="selection" />
+      <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="供应商" align="center" prop="supplierName" />
       <el-table-column label="产品信息" align="center" prop="productNames" min-width="200">
         <template #default="scope">

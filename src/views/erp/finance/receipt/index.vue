@@ -8,22 +8,22 @@
       :inline="true"
       label-width="68px"
     >
-      <!-- <el-form-item label="收款平台" prop="customerId">
-            <el-select
-              v-model="formData.customerId"
-              clearable
-              filterable
-              placeholder="请选择收款平台"
-              class="!w-1/1"
-            >
-              <el-option
-                v-for="item in customerList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item> -->
+      <el-form-item label="收款平台" prop="customerId">
+        <el-select
+          v-model="queryParams.customerId"
+          clearable
+          filterable
+          placeholder="请选择收款平台"
+          class="!w-240px"
+        >
+          <el-option
+            v-for="item in customerList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="收款账户" prop="accountId">
         <el-select
           v-model="queryParams.accountId"
@@ -40,15 +40,6 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input
-          v-model="queryParams.remark"
-          placeholder="请输入备注"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
       <el-form-item label="收款时间" prop="receiptTime">
         <el-date-picker
           v-model="queryParams.receiptTime"
@@ -57,6 +48,15 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
+          class="!w-240px"
+        />
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input
+          v-model="queryParams.remark"
+          placeholder="请输入备注"
+          clearable
+          @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
@@ -100,7 +100,7 @@
       :data="list"
       :stripe="true"
       :show-overflow-tooltip="true"
-       show-summary
+      show-summary
       :summary-method="footerMethod"
       @selection-change="handleSelectionChange"
     >
@@ -119,14 +119,14 @@
         prop="receiptPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
-       <el-table-column
+      <el-table-column
         label="收款时间"
         align="center"
         prop="receiptTime"
         :formatter="dateFormatter2"
         width="120px"
       />
-       <el-table-column
+      <el-table-column
         label="到账时间"
         align="center"
         prop="receivedTime"
@@ -198,6 +198,7 @@ import * as UserApi from '@/api/system/user'
 import { erpPriceTableColumnFormatter } from '@/utils'
 import { SupplierApi, SupplierVO } from '@/api/erp/purchase/supplier'
 import { AccountApi, AccountVO } from '@/api/erp/finance/account'
+import { CustomerApi, CustomerVO } from '@/api/erp/sale/customer'
 
 /** ERP 收款单列表 */
 defineOptions({ name: 'ErpPurchaseOrder' })
@@ -223,6 +224,7 @@ const queryParams = reactive({
 })
 const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出的加载中
+const customerList = ref<CustomerVO[]>([]) // 平台列表
 const supplierList = ref<SupplierVO[]>([]) // 供应商列表
 const userList = ref<UserVO[]>([]) // 用户列表
 const accountList = ref<AccountVO[]>([]) // 账户列表
@@ -336,10 +338,10 @@ const footerMethod = (params: { columns: any; data: any }) => {
 /** 初始化 **/
 onMounted(async () => {
   await getList()
-  // 加载供应商、用户、账户
+  // 加载供应商、平台、账户
   supplierList.value = await SupplierApi.getSupplierSimpleList()
-  userList.value = await UserApi.getSimpleUserList()
   accountList.value = await AccountApi.getAccountSimpleList()
+  customerList.value = await CustomerApi.getCustomerSimpleList()
 })
 // TODO 芋艿：可优化功能：列表界面，支持导入
 // TODO 芋艿：可优化功能：详情界面，支持打印

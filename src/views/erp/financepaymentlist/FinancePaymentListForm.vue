@@ -103,6 +103,8 @@ const open = async (type: string, id?: number) => {
     } finally {
       formLoading.value = false
     }
+  } else {
+    dialogVisible.value = true
   }
   // 加载用户列表
   userList.value = await UserApi.getSimpleUserList()

@@ -99,7 +99,6 @@
       v-loading="loading"
       :data="list"
       :stripe="true"
-      :show-overflow-tooltip="true"
       show-summary
       :summary-method="footerMethod"
       @selection-change="handleSelectionChange"

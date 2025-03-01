@@ -53,7 +53,7 @@
         
         <el-col :span="12">
           <el-form-item label="合计收款" prop="totalPrice">
-            <el-input-number v-model="formData.totalPrice" :precision="2" :step="1" :min="0">
+            <el-input-number v-model="formData.totalPrice" :precision="2" :step="1" :min="0" style="width: 100%">
               <template #prefix>
                 <span>￥</span>
               </template>
@@ -61,7 +61,7 @@
             <el-input
               v-model="formData.totalPrice"
               :formatter="(value) => `$${(value / usdcny).toFixed(2)}`"
-              style="width: 100px"
+              style="width: 100%"
               disabled
             />
           </el-form-item>
@@ -77,10 +77,9 @@
             />
           </el-form-item>
         </el-col>
-
         <el-col :span="12">
           <el-form-item label="实际到账">
-            <el-input-number v-model="formData.receiptPrice" :precision="2" :step="1" :min="0">
+            <el-input-number v-model="formData.receiptPrice" :precision="2" :step="1" :min="0" style="width: 100%">
               <template #prefix>
                 <span>￥</span>
               </template>
@@ -88,7 +87,7 @@
             <el-input
               v-model="formData.receiptPrice"
               :formatter="(value) => `$${(value / usdcny).toFixed(2)}`"
-              style="width: 100px"
+              style="width: 100%"
               disabled
             />
           </el-form-item>
@@ -110,7 +109,6 @@
             <el-input
               type="textarea"
               v-model="formData.remark"
-              :rows="1"
               placeholder="请输入备注"
             />
           </el-form-item>

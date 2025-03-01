@@ -25,6 +25,7 @@
                 :key="item.id"
                 :label="item.barCode + ' - ' + item.name"
                 :value="item.id"
+                :disabled="item.disabled"
               />
             </el-select>
           </el-form-item>
@@ -213,6 +214,13 @@ defineExpose({ validate })
 /** 初始化 */
 onMounted(async () => {
   productList.value = await ProductApi.getProductSimpleList()
+
+  // 禁用无效状态的产品
+  productList.value = productList.value.map((item) => ({
+    ...item,
+    disabled: item.status === 1
+  }))
+
   // 默认添加一个
   if (formData.value.length === 0) {
     handleAdd()

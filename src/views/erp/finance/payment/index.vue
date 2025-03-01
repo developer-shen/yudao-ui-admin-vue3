@@ -133,7 +133,6 @@
       v-loading="loading"
       :data="list"
       :stripe="true"
-      :show-overflow-tooltip="true"
       show-summary
       :summary-method="footerMethod"
       @selection-change="handleSelectionChange"
@@ -154,8 +153,8 @@
         :formatter="dateFormatter2"
         width="120px"
       />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" fixed="right" width="250">
+      <el-table-column label="备注" align="center" prop="remark" width="550"/>
+      <el-table-column label="操作" align="center" fixed="right" width="280">
         <template #default="scope">
           <el-button
             type="warning"

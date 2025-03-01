@@ -44,7 +44,7 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="头程费用" prop="firstLegPrice">
-            <el-input-number v-model="formData.firstLegPrice" :precision="2" :step="1" :min="0">
+            <el-input-number v-model="formData.firstLegPrice" :precision="2" :step="1" :min="0" style="width: 70%">
               <template #prefix>
                 <span>￥</span>
               </template>
@@ -52,14 +52,14 @@
             <el-input
               v-model="formData.firstLegPrice"
               :formatter="(value) => `$${(value / usdcny).toFixed(1)}`"
-              style="width: 80px"
+              style="width: 30%"
               disabled
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="尾程费用" prop="lastMilePrice">
-            <el-input-number v-model="formData.lastMilePrice" :precision="2" :step="1" :min="0">
+            <el-input-number v-model="formData.lastMilePrice" :precision="2" :step="1" :min="0" style="width: 70%">
               <template #prefix>
                 <span>￥</span>
               </template>
@@ -67,7 +67,7 @@
             <el-input
               v-model="formData.lastMilePrice"
               :formatter="(value) => `$${(value / usdcny).toFixed(1)}`"
-              style="width: 80px"
+              style="width: 30%"
               disabled
             />
           </el-form-item>
@@ -80,18 +80,19 @@
               :step="0.1"
               :min="0"
               :max="1"
+              style="width: 70%"
             />
             <el-input
               v-model="formData.refundRate"
               :formatter="(value) => `${(value * 100).toFixed(0)}%`"
-              style="width: 80px"
+              style="width: 30%"
               disabled
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="退货运费" prop="refundFreight">
-            <el-input-number v-model="formData.refundFreight" :precision="2" :step="1" :min="0">
+            <el-input-number v-model="formData.refundFreight" :precision="2" :step="1" :min="0" style="width: 70%">
               <template #prefix>
                 <span>￥</span>
               </template>
@@ -99,14 +100,14 @@
             <el-input
               v-model="formData.refundFreight"
               :formatter="(value) => `$${(value / usdcny).toFixed(1)}`"
-              style="width: 80px"
+              style="width: 30%"
               disabled
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="采购价格" prop="purchasePrice">
-            <el-input-number v-model="formData.purchasePrice" :precision="2" :step="1" :min="0">
+            <el-input-number v-model="formData.purchasePrice" :precision="2" :step="1" :min="0" style="width: 70%">
               <template #prefix>
                 <span>￥</span>
               </template>
@@ -114,14 +115,14 @@
             <el-input
               v-model="formData.purchasePrice"
               :formatter="(value) => `$${(value / usdcny).toFixed(1)}`"
-              style="width: 80px"
+              style="width: 30%"
               disabled
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="销售价格" prop="salePrice">
-            <el-input-number v-model="formData.salePrice" :precision="2" :step="1" :min="0">
+            <el-input-number v-model="formData.salePrice" :precision="2" :step="1" :min="0" style="width: 70%">
               <template #prefix>
                 <span>￥</span>
               </template>
@@ -129,14 +130,14 @@
             <el-input
               v-model="formData.salePrice"
               :formatter="(value) => `$${(value / usdcny).toFixed(1)}`"
-              style="width: 80px"
+              style="width: 30%"
               disabled
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="广告费用" prop="adPrice">
-            <el-input-number v-model="formData.adPrice" :precision="2" :step="1" :min="0">
+            <el-input-number v-model="formData.adPrice" :precision="2" :step="1" :min="0" style="width: 70%">
               <template #prefix>
                 <span>￥</span>
               </template>
@@ -144,14 +145,14 @@
             <el-input
               v-model="formData.adPrice"
               :formatter="(value) => `$${(value / usdcny).toFixed(1)}`"
-              style="width: 80px"
+              style="width: 30%"
               disabled
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="其他费用" prop="otherPrice">
-            <el-input-number v-model="formData.otherPrice" :precision="2" :step="1" :min="0">
+            <el-input-number v-model="formData.otherPrice" :precision="2" :step="1" :min="0" style="width: 70%">
               <template #prefix>
                 <span>￥</span>
               </template>
@@ -159,7 +160,7 @@
             <el-input
               v-model="formData.otherPrice"
               :formatter="(value) => `$${(value / usdcny).toFixed(1)}`"
-              style="width: 80px"
+              style="width: 30%"
               disabled
             />
           </el-form-item>

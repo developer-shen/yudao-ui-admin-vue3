@@ -48,7 +48,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="实付金额">
-            <el-input-number v-model="formData.paymentPrice" :precision="0" :step="1" :min="0" size="large">
+            <el-input-number v-model="formData.paymentPrice" :precision="0" :step="1" :min="0" style="width: 100%">
               <template #prefix>
                 <span>￥</span>
               </template>
@@ -68,7 +68,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="付款编号" size="large">
-            <el-input-number v-model="formData.paymentListId" :step="1" :min="0" />
+            <el-input-number v-model="formData.paymentListId" :step="1" :min="0" controls-position="right" style="width: 80%"/>
             <el-button
               type="warning"
               link
@@ -79,12 +79,11 @@
             </el-button>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="备注" prop="remark">
             <el-input
               type="textarea"
               v-model="formData.remark"
-              :rows="1"
               placeholder="请输入备注"
             />
           </el-form-item>

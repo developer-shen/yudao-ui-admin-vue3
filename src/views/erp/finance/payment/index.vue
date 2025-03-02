@@ -64,7 +64,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button @click="handleQuery"
+            <el-button @click="handleQuery" type="primary"
               ><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button
             >
             <el-button @click="resetQuery"
@@ -153,7 +153,7 @@
         :formatter="dateFormatter2"
         width="120px"
       />
-      <el-table-column label="备注" align="center" prop="remark" width="550"/>
+      <el-table-column label="备注" align="center" prop="remark" width="550" />
       <el-table-column label="操作" align="center" fixed="right" width="280">
         <template #default="scope">
           <el-button
@@ -261,11 +261,11 @@ const supplierList = ref<SupplierVO[]>([]) // 供应商列表
 const userList = ref<UserVO[]>([]) // 用户列表
 const accountList = ref<AccountVO[]>([]) // 账户列表
 const statistic = ref({
-  totalPayment: 0,// 采购总金额
-  amountPaid: 0,// 已结算金额
-  unpaidAmount: 0,// 待结算金额
-  percentage: 0,// 结算百分比
-})//统计数据
+  totalPayment: 0, // 采购总金额
+  amountPaid: 0, // 已结算金额
+  unpaidAmount: 0, // 待结算金额
+  percentage: 0 // 结算百分比
+}) //统计数据
 
 /** 查询列表 */
 const getList = async () => {

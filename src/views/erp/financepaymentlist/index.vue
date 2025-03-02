@@ -45,7 +45,7 @@
         </div>
         <!-- 搜索工作栏 -->
         <div>
-          <el-divider @click="showFilter()" style="margin-top: 0; cursor: pointer;"
+          <el-divider @click="showFilter()" style="margin-top: 0; cursor: pointer"
             >{{ isShowFilter ? '收起筛选' : '展开筛选' }}<Icon icon="ep:filter"
           /></el-divider>
         </div>
@@ -151,24 +151,20 @@
     <el-row class="mt-8px" :gutter="8" justify="space-between">
       <!-- 饼状图 -->
       <el-col :xl="8" :lg="8" :md="8" :sm="8" :xs="8" class="mb-8px">
-        <el-skeleton :loading="loading" animated>
-          <el-card shadow="hover" class="mb-8px">
-            <el-skeleton :loading="loading" animated>
-              <Echart :options="pieOptionsData" :height="320" />
-            </el-skeleton>
-          </el-card>
-        </el-skeleton>
+        <el-card shadow="hover" class="mb-8px">
+          <el-skeleton :loading="loading" animated>
+            <Echart :options="pieOptionsData" :height="320" />
+          </el-skeleton>
+        </el-card>
       </el-col>
 
       <!-- 柱状图 -->
       <el-col :xl="16" :lg="16" :md="16" :sm="16" :xs="16" class="mb-8px">
-        <el-skeleton :loading="loading" animated>
-          <el-card shadow="hover" class="mb-8px">
-            <el-skeleton :loading="loading" animated>
-              <Echart :options="barOptionsData" :height="320" />
-            </el-skeleton>
-          </el-card>
-        </el-skeleton>
+        <el-card shadow="hover" class="mb-8px">
+          <el-skeleton :loading="loading" animated>
+            <Echart :options="barOptionsData" :height="320" />
+          </el-skeleton>
+        </el-card>
       </el-col>
     </el-row>
   </ContentWrap>
@@ -267,8 +263,7 @@ const list = ref<FinancePaymentListVO[]>([]) // 列表的数据
 const pieOptionsDataList = ref([]) // 饼状图的数据
 const barOptionsDataList = ref([]) // 柱状图的数据
 const totalPrice = ref(0) // 付款总数
-const totalPriceLive = useTransition(totalPrice, { duration: 1500 }) // 付款总数(动画)
-
+const totalPriceLive = useTransition(totalPrice, { duration: 1000 }) // 付款总数(动画)
 //收起展开搜索条件
 const showFilter = () => {
   isShowFilter.value = !isShowFilter.value
@@ -294,11 +289,6 @@ const userList = ref<UserVO[]>([]) // 用户列表
 
 // 饼状图的配置
 const pieOptions: EChartsOption = {
-  // title: {
-  //   text: '总支出',
-  //   subtext: '0 元',
-  //   left: 'left'
-  // },
   tooltip: {
     trigger: 'item'
   },
@@ -435,16 +425,6 @@ const getStatisticsData = async () => {
 
   // 付款总数
   totalPrice.value = pieOptionsDataList.value.reduce((sum, item) => sum + item.value, 0)
-  // pieOptionsData!.title = {
-  //   text:
-  //     queryParams.paymentTime.length == 2
-  //       ? queryParams.paymentTime[0].substring(0, 10) +
-  //         '至' +
-  //         queryParams.paymentTime[1].substring(0, 10) +
-  //         '总支出'
-  //       : '总支出',
-  //   subtext: totalPrice + ' 元'
-  // }
 
   // 柱状图数据
   set(

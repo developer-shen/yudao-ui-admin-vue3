@@ -64,7 +64,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
         <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
         <el-button
           type="primary"
@@ -73,6 +73,10 @@
           v-hasPermi="['erp:sale-order:create']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
+        </el-button>
+         <el-button v-hasPermi="['erp:sale-order:import']" plain type="warning" @click="handleImport">
+          <Icon icon="ep:upload" />
+          导入
         </el-button>
         <el-button
           type="success"
@@ -140,11 +144,6 @@
         :formatter="dateFormatter2"
         width="120px"
       />
-      <el-table-column label="状态" align="center" fixed="right" width="90" prop="status">
-        <template #default="scope">
-          <dict-tag :type="DICT_TYPE.ERP_AUDIT_STATUS" :value="scope.row.status" />
-        </template>
-      </el-table-column>
       <el-table-column label="操作" align="center" fixed="right" width="220">
         <template #default="scope">
           <el-button
@@ -155,24 +154,6 @@
             :disabled="scope.row.status === 20"
           >
             编辑
-          </el-button>
-          <el-button
-            link
-            type="primary"
-            @click="handleUpdateStatus(scope.row.id, 20)"
-            v-hasPermi="['erp:sale-order:update-status']"
-            v-if="scope.row.status === 10"
-          >
-            审批
-          </el-button>
-          <el-button
-            link
-            type="danger"
-            @click="handleUpdateStatus(scope.row.id, 10)"
-            v-hasPermi="['erp:sale-order:update-status']"
-            v-else
-          >
-            反审批
           </el-button>
           <el-button
             link
@@ -196,6 +177,8 @@
 
   <!-- 表单弹窗：添加/修改 -->
   <SaleOrderForm ref="formRef" @success="getList" />
+    <!-- 导入对话框 -->
+  <SaleOrderImportForm ref="importFormRef" @success="getList" />
 </template>
 
 <script setup lang="ts">
@@ -204,6 +187,7 @@ import { dateFormatter2 } from '@/utils/formatTime'
 import download from '@/utils/download'
 import { SaleOrderApi, SaleOrderVO } from '@/api/erp/sale/order'
 import SaleOrderForm from './SaleOrderForm.vue'
+import SaleOrderImportForm from './SaleOrderImportForm.vue'
 import { ProductApi, ProductVO } from '@/api/erp/product/product'
 import { UserVO } from '@/api/system/user'
 import * as UserApi from '@/api/system/user'
@@ -293,6 +277,12 @@ const handleUpdateStatus = async (id: number, status: number) => {
     // 刷新列表
     await getList()
   } catch {}
+}
+
+/** 导入按钮操作 */
+const importFormRef = ref()
+const handleImport = () => {
+  importFormRef.value.open()
 }
 
 /** 导出按钮操作 */

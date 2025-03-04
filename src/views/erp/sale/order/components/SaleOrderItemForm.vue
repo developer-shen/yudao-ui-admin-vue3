@@ -31,6 +31,21 @@
           </el-form-item>
         </template>
       </el-table-column>
+      <el-table-column label="附件" align="center" prop="fileUrl">
+        <template #default="{ row, $index }">
+          <el-form-item :prop="`${$index}.fileUrl`" class="mb-0px!">
+            <el-image
+              v-if="row.fileUrl"
+              class="h-30px w-30px"
+              lazy
+              :src="row.fileUrl"
+              :preview-src-list="[row.fileUrl]"
+              preview-teleported
+              fit="cover"
+            />
+          </el-form-item>
+        </template>
+      </el-table-column>
       <el-table-column label="数量" prop="count" min-width="140">
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.count`" :rules="formRules.count" class="mb-0px!">
@@ -191,6 +206,7 @@ const onChangeProduct = (productId, row) => {
     row.productUnitName = product.unitName
     row.productBarCode = product.barCode
     row.productPrice = product.salePrice
+    row.fileUrl = product.fileUrl
   }
   // 加载库存
   setStockCount(row)

@@ -8,7 +8,7 @@
     :inline-message="true"
     :disabled="disabled"
   >
-    <el-table :data="formData" show-summary :summary-method="getSummaries" class="-mt-10px">
+    <el-table :data="formData" show-summary :summary-method="getSummaries" class="-mt-10px" >
       <el-table-column label="序号" type="index" align="center" width="60" />
       <el-table-column label="spu货号" min-width="180">
         <template #default="{ row, $index }">
@@ -28,6 +28,21 @@
                 :disabled="item.disabled"
               />
             </el-select>
+          </el-form-item>
+        </template>
+      </el-table-column>
+      <el-table-column label="附件" align="center" prop="fileUrl">
+        <template #default="{ row, $index }">
+          <el-form-item :prop="`${$index}.fileUrl`" class="mb-0px!">
+            <el-image
+              v-if="row.fileUrl"
+              class="h-30px w-30px"
+              lazy
+              :src="row.fileUrl"
+              :preview-src-list="[row.fileUrl]"
+              preview-teleported
+              fit="cover"
+            />
           </el-form-item>
         </template>
       </el-table-column>
@@ -191,6 +206,7 @@ const onChangeProduct = (productId, row) => {
     row.productUnitName = product.unitName
     row.productBarCode = product.barCode
     row.productPrice = product.purchasePrice
+    row.fileUrl = product.fileUrl
   }
   // 加载库存
   setStockCount(row)

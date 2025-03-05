@@ -5,6 +5,7 @@ export interface PurchaseOrderVO {
   id: number // 订单工单编号
   no: string // 采购订单号
   customerId: number // 客户编号
+  warehouseId: number // 仓库编号
   orderTime: Date // 订单时间
   totalCount: number // 合计数量
   totalPrice: number // 合计金额，单位：元

@@ -55,6 +55,45 @@
             />
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="销售平台" prop="customerIdList">
+            <el-select
+              v-model="formData.customerIdList"
+              multiple
+              clearable
+              filterable
+              placeholder="请选择销售平台"
+              class="!w-1/1"
+            >
+              <el-option
+                v-for="item in customerList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="存放仓库" prop="warehouseIdList">
+            <el-select
+              v-model="formData.warehouseIdList"
+              disabled
+              multiple
+              clearable
+              filterable
+              placeholder="请选择存放仓库"
+              class="!w-1/1"
+            >
+              <el-option
+                v-for="item in warehouseList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-col :span="24">
           <el-form-item label="备注" prop="remark">
             <el-input type="textarea" v-model="formData.remark" placeholder="请输入备注" />
@@ -80,6 +119,8 @@ import { ProductUnitApi, ProductUnitVO } from '@/api/erp/product/unit'
 import { CommonStatusEnum } from '@/utils/constants'
 import { defaultProps, handleTree } from '@/utils/tree'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
+import { CustomerApi, CustomerVO } from '@/api/erp/sale/customer'
+import { WarehouseApi, WarehouseVO } from '@/api/erp/stock/warehouse'
 
 /** ERP 产品 表单 */
 defineOptions({ name: 'ProductForm' })
@@ -105,7 +146,9 @@ const formData = ref({
   weight: undefined,
   purchasePrice: undefined,
   salePrice: undefined,
-  minPrice: undefined
+  minPrice: undefined,
+  customerIdList: [],
+  warehouseIdList: [],
 })
 const formRules = reactive({
   barCode: [{ required: true, message: 'spu货号不能为空', trigger: 'blur' }],
@@ -115,6 +158,8 @@ const formRules = reactive({
 const formRef = ref() // 表单 Ref
 const categoryList = ref<ProductCategoryVO[]>([]) // 产品分类列表
 const unitList = ref<ProductUnitVO[]>([]) // 产品单位列表
+const customerList = ref<CustomerVO[]>([]) // 销售平台列表
+const warehouseList = ref<WarehouseVO[]>([]) // 仓库列表
 
 /** 打开弹窗 */
 const open = async (type: string, id?: number) => {
@@ -136,6 +181,10 @@ const open = async (type: string, id?: number) => {
   categoryList.value = handleTree(categoryData, 'id', 'parentId')
   // 产品单位
   unitList.value = await ProductUnitApi.getProductUnitSimpleList()
+  // 加载销售平台列表
+  customerList.value = await CustomerApi.getCustomerSimpleList()
+  // 加载仓库列表
+  warehouseList.value = await WarehouseApi.getWarehouseSimpleList()
 }
 defineExpose({ open }) // 提供 open 方法，用于打开弹窗
 
@@ -179,7 +228,9 @@ const resetForm = () => {
     weight: undefined,
     purchasePrice: undefined,
     salePrice: undefined,
-    minPrice: undefined
+    minPrice: undefined,
+    customerIdList: [],
+    warehouseIdList: [],
   }
   formRef.value?.resetFields()
 }

@@ -38,6 +38,24 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :span="8">
+          <el-form-item label="存放仓库" prop="warehouseId">
+            <el-select
+              v-model="formData.warehouseId"
+              clearable
+              filterable
+              placeholder="请选择存放仓库"
+              class="!w-1/1"
+            >
+              <el-option
+                v-for="item in warehouseList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-col :span="16">
           <el-form-item label="备注" prop="remark">
             <el-input
@@ -85,6 +103,7 @@ import { SupplierApi, SupplierVO } from '@/api/erp/purchase/supplier'
 import { erpPriceInputFormatter, erpPriceMultiply } from '@/utils'
 import * as UserApi from '@/api/system/user'
 import { AccountApi, AccountVO } from '@/api/erp/finance/account'
+import { WarehouseApi, WarehouseVO } from '@/api/erp/stock/warehouse'
 
 /** ERP 销售订单表单 */
 defineOptions({ name: 'PurchaseOrderForm' })
@@ -99,6 +118,7 @@ const formType = ref('') // 表单的类型：create - 新增；update - 修改�
 const formData = ref({
   id: undefined,
   supplierId: undefined,
+  warehouseId: undefined,
   accountId: undefined,
   orderTime: undefined,
   remark: undefined,
@@ -112,13 +132,15 @@ const formData = ref({
 })
 const formRules = reactive({
   supplierId: [{ required: true, message: '供应商不能为空', trigger: 'blur' }],
-  orderTime: [{ required: true, message: '订单时间不能为空', trigger: 'blur' }]
+  orderTime: [{ required: true, message: '订单时间不能为空', trigger: 'blur' }],
+  warehouseId: [{ required: true, message: '存放仓库不能为空', trigger: 'blur' }],
 })
 const disabled = computed(() => formType.value === 'detail')
 const formRef = ref() // 表单 Ref
 const supplierList = ref<SupplierVO[]>([]) // 供应商列表
 const accountList = ref<AccountVO[]>([]) // 账户列表
 const userList = ref<UserApi.UserVO[]>([]) // 用户列表
+const warehouseList = ref<WarehouseVO[]>([]) // 仓库列表
 
 /** 子表的表单 */
 const subTabsName = ref('item')
@@ -157,6 +179,8 @@ const open = async (type: string, id?: number) => {
   }
   // 加载供应商列表
   supplierList.value = await SupplierApi.getSupplierSimpleList()
+  // 加载仓库列表
+  warehouseList.value = await WarehouseApi.getWarehouseSimpleList()
   // 加载用户列表
   userList.value = await UserApi.getSimpleUserList()
   // 加载账户列表
@@ -198,6 +222,7 @@ const resetForm = () => {
   formData.value = {
     id: undefined,
     supplierId: undefined,
+    warehouseId: undefined,
     accountId: undefined,
     orderTime: undefined,
     remark: undefined,

@@ -51,7 +51,7 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button  type="primary" @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
         <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
         <el-button
           type="primary"
@@ -77,8 +77,8 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" border>
-      <el-table-column label="spu货号" align="center" prop="barCode" fixed/>
-      <el-table-column label="产品名称" align="center" prop="name" min-width="200" fixed/>
+      <el-table-column label="spu货号" align="center" prop="barCode" fixed />
+      <el-table-column label="产品名称" align="center" prop="name" min-width="200" fixed />
       <el-table-column label="图片" align="center" prop="fileUrl" width="110px" fixed>
         <template #default="{ row }">
           <el-image
@@ -108,7 +108,6 @@
                 </el-button>
               </el-tooltip>
             </template>
-            
             <!-- 添加skc按钮 -->
             <el-button
               size="small"
@@ -137,27 +136,37 @@
       <el-table-column label="预估利润" align="center">
         <template #default="scope">
           <el-button
-              link
-              type="primary"
-              @click="openProfitForm(scope.row.id, scope.row.profitId)"
-              v-hasPermi="['erp:product:update']"
-            >
-            {{ scope.row.profitId ? scope.row.estimatedProfit : '???'}} 
-            </el-button>
+            link
+            type="primary"
+            @click="openProfitForm(scope.row.id, scope.row.profitId)"
+            v-hasPermi="['erp:product:update']"
+          >
+            {{ scope.row.profitId ? scope.row.estimatedProfit : '???' }}
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column label="尺码表" align="center">
         <template #default="scope">
-          <el-button 
+          <el-button
             link
             type="primary"
             @click="openSizeView(scope.row.barCode)"
             v-hasPermi="['erp:product:update']"
           >
-          <Icon icon='ep:document' />
+            <Icon icon="ep:document" />
           </el-button>
         </template>
-      </el-table-column>      
+      </el-table-column>
+      <el-table-column label="销售平台" align="center" width="130">
+        <template #default="scope">
+          <!-- 遍历 items 数组，生成按钮 -->
+          <template v-for="item in scope.row.customerIdList" :key="item">
+            <el-tag type="primary"> {{ customerMap[item] }}</el-tag>
+            <br />
+          </template>
+        </template>
+      </el-table-column>
+      <el-table-column label="存放仓库" align="center" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="状态" align="center" prop="status">
         <template #default="scope">
@@ -199,12 +208,11 @@
   <!-- skc变种表单弹窗：添加/修改 -->
   <ProductSkcForm ref="skcFormRef" @success="getList" />
   <!-- 利润表单弹窗：添加/修改 -->
-  <ProductProfitForm ref="profitFormRef" @success="getList" /> 
+  <ProductProfitForm ref="profitFormRef" @success="getList" />
   <!-- 商品尺码表 -->
-  <ProductSizeView ref="sizeRef"/>   
+  <ProductSizeView ref="sizeRef" />
   <!-- 属性表单弹窗：添加/修改 -->
   <!-- <ProductAttributesForm ref="attrFormRef" @success="getList" />   -->
-
 </template>
 
 <script setup lang="ts">
@@ -212,12 +220,14 @@ import { dateFormatter } from '@/utils/formatTime'
 import download from '@/utils/download'
 import { ProductApi, ProductVO } from '@/api/erp/product/product'
 import { ProductCategoryApi, ProductCategoryVO } from '@/api/erp/product/category'
+import { CustomerApi, CustomerVO } from '@/api/erp/sale/customer'
+import { WarehouseApi, WarehouseVO } from '@/api/erp/stock/warehouse'
 import ProductForm from './ProductForm.vue'
 import ProductSkcForm from './ProductSkcForm.vue'
 import ProductProfitForm from './ProductProfitForm.vue'
 import ProductSizeView from './ProductSizeView.vue'
 // import ProductAttributesForm from './ProductAttributesFrom.vue'
-import { DICT_TYPE, getIntDictOptions} from '@/utils/dict'
+import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { handleTree } from '@/utils/tree'
 import { erpPriceTableColumnFormatter } from '@/utils'
 
@@ -241,6 +251,8 @@ const queryParams = reactive({
 const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出的加载中
 const categoryList = ref<ProductCategoryVO[]>([]) // 产品分类列表
+const customerList = ref<CustomerVO[]>([]) // 销售平台列表
+const customerMap = ref<Record<number, string>>({}) // ID -> value 映射表
 
 /** 查询列表 */
 const getList = async () => {
@@ -282,9 +294,9 @@ const openSkcForm = (type: string, skcId?: number, productId?: number) => {
 const profitFormRef = ref()
 const openProfitForm = (productId?: number, profitId?: number) => {
   let type = ''
-  if(profitId){
+  if (profitId) {
     type = 'update'
-  }else{
+  } else {
     type = 'create'
   }
   profitFormRef.value.open(type, productId, profitId)
@@ -294,9 +306,9 @@ const openProfitForm = (productId?: number, profitId?: number) => {
 const attrFormRef = ref()
 const openAttrForm = (productId?: number, attributesId?: number) => {
   let type = ''
-  if(attributesId){
+  if (attributesId) {
     type = 'update'
-  }else{
+  } else {
     type = 'create'
   }
   attrFormRef.value.open(type, productId, attributesId)
@@ -304,7 +316,7 @@ const openAttrForm = (productId?: number, attributesId?: number) => {
 
 /** 打开尺码表 */
 const sizeRef = ref()
-const openSizeView= (barCode: string) => {
+const openSizeView = (barCode: string) => {
   sizeRef.value.open(barCode)
 }
 
@@ -342,6 +354,15 @@ onMounted(async () => {
   // 产品分类
   const categoryData = await ProductCategoryApi.getProductCategorySimpleList()
   categoryList.value = handleTree(categoryData, 'id', 'parentId')
+  // 加载销售平台列表
+  customerList.value = await CustomerApi.getCustomerSimpleList()
+  // 构建销售平台 ID -> value 的映射表
+  const map: Record<number, string> = {}
+  customerList.value.forEach((item) => {
+    map[item.id] = item.name
+  })
+  // 赋值给 customerMap
+  customerMap.value = map
 
   await getList()
 })

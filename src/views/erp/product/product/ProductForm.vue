@@ -78,7 +78,6 @@
           <el-form-item label="存放仓库" prop="warehouseIdList">
             <el-select
               v-model="formData.warehouseIdList"
-              disabled
               multiple
               clearable
               filterable

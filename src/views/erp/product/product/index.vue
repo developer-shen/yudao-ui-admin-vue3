@@ -166,7 +166,15 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column label="存放仓库" align="center" />
+      <el-table-column label="存放仓库" align="center" width="130">
+        <template #default="scope">
+          <!-- 遍历 items 数组，生成按钮 -->
+          <template v-for="item in scope.row.warehouseIdList" :key="item">
+            <el-tag type="primary"> {{ warehouseMap[item] }}</el-tag>
+            <br />
+          </template>
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="状态" align="center" prop="status">
         <template #default="scope">
@@ -252,7 +260,9 @@ const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出的加载中
 const categoryList = ref<ProductCategoryVO[]>([]) // 产品分类列表
 const customerList = ref<CustomerVO[]>([]) // 销售平台列表
-const customerMap = ref<Record<number, string>>({}) // ID -> value 映射表
+const customerMap = ref<Record<number, string>>({}) // 销售平台ID -> value 映射表
+const warehouseList = ref<CustomerVO[]>([]) // 存放仓库列表
+const warehouseMap = ref<Record<number, string>>({}) // 存放仓库ID -> value 映射表
 
 /** 查询列表 */
 const getList = async () => {
@@ -351,18 +361,29 @@ const handleExport = async () => {
 /** 初始化 **/
 onMounted(async () => {
   await getList()
-  // 产品分类
-  const categoryData = await ProductCategoryApi.getProductCategorySimpleList()
-  categoryList.value = handleTree(categoryData, 'id', 'parentId')
+  // 加载产品分类
+  // const categoryData = await ProductCategoryApi.getProductCategorySimpleList()
+  // categoryList.value = handleTree(categoryData, 'id', 'parentId')
   // 加载销售平台列表
   customerList.value = await CustomerApi.getCustomerSimpleList()
+  // 加载存放仓库列表
+  warehouseList.value = await WarehouseApi.getWarehouseSimpleList()
+
   // 构建销售平台 ID -> value 的映射表
-  const map: Record<number, string> = {}
+  const customer: Record<number, string> = {}
   customerList.value.forEach((item) => {
-    map[item.id] = item.name
+    customer[item.id] = item.name
   })
   // 赋值给 customerMap
-  customerMap.value = map
+  customerMap.value = customer
+
+  // 构建存放仓库 ID -> value 的映射表
+  const warehouse: Record<number, string> = {}
+  warehouseList.value.forEach((item) => {
+    warehouse[item.id] = item.name
+  })
+  // 赋值给 warehouseMap
+  warehouseMap.value = warehouse
 
   await getList()
 })
